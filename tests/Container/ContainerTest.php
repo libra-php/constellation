@@ -126,7 +126,7 @@ class ContainerTest extends TestCase
         // Note: EDITOR must be nvim!
         $container->setDefinitions([
             "Constellation\Tests\Container\Dog" => \DI\autowire()
-                ->constructorParameter("name", \DI\env("EDITOR"))
+                ->constructorParameter("name", \DI\env("EDITOR", "nvim"))
         ]);
         $dog = $container->build()->get("Constellation\Tests\Container\Dog");
         $this->assertInstanceOf(Dog::class, $dog);
