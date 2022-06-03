@@ -102,7 +102,7 @@ class ContainerTest extends TestCase
     {
         $container = Container::getInstance();
 
-        $container->setDefinitions([
+        $container->addDefinitions([
             "Constellation\Tests\Container\Animal" => \DI\autowire()
                 ->constructor(new Dog("Apollo")),
         ]);
