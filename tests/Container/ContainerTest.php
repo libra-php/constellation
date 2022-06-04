@@ -98,28 +98,6 @@ class ContainerTest extends TestCase
         $this->assertEquals('William', $dog->owner);
     }
 
-    public function testContainerAddDefintions()
-    {
-        $container = Container::getInstance();
-
-        $container->addDefinitions([
-            "Constellation\Tests\Container\Animal" => \DI\autowire()
-                ->constructor(new Dog("Apollo")),
-        ]);
-        $container->addDefinitions([
-            "Constellation\Tests\Container\Dog" => \DI\autowire()
-                ->constructorParameter("name", "Leroy")
-                ->methodParameter("setOwner", "name", "Jimmy"),
-        ]);
-        $animal = $container->build()->get("Constellation\Tests\Container\Animal");
-        $this->assertInstanceOf(Animal::class, $animal);
-        $this->assertEquals('Apollo', $animal->getAnimalName());
-        $dog = $container->get("Constellation\Tests\Container\Dog");
-        $this->assertInstanceOf(Dog::class, $dog);
-        $this->assertEquals('Leroy', $dog->getName());
-        $this->assertEquals('Jimmy', $dog->owner);
-    }
-
     public function testContainerEnvironmentVariables()
     {
         $container = new Container();

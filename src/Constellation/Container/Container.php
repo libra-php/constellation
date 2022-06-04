@@ -41,9 +41,4 @@ class Container
             $this->definitions = $defintions;
         }
     }
-
-    public function addDefinitions(array $definitions)
-    {
-        $this->definitions = [...$this->definitions, ...$definitions];
-    }
 }
