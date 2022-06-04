@@ -77,7 +77,7 @@ class ContainerTest extends TestCase
         $dog = $container->build()->get("Constellation\Tests\Container\Dog");
         $this->assertInstanceOf(Dog::class, $dog);
         $this->assertEquals('Leroy', $dog->getName());
-        $this->assertEquals('Jimmy', $dog->owner);
+        $this->assertEquals('Jimmy', $dog->getOwner());
 
         // Test setter/method injections
         $container->setDefinitions([
@@ -86,7 +86,7 @@ class ContainerTest extends TestCase
         ]);
         $dog = $container->build()->get("Constellation\Tests\Container\Dog");
         $this->assertInstanceOf(Dog::class, $dog);
-        $this->assertEquals('Bobby', $dog->owner);
+        $this->assertEquals('Bobby', $dog->getOwner());
 
         // Test property injections
         $container->setDefinitions([
@@ -95,7 +95,7 @@ class ContainerTest extends TestCase
         ]);
         $dog = $container->build()->get("Constellation\Tests\Container\Dog");
         $this->assertInstanceOf(Dog::class, $dog);
-        $this->assertEquals('William', $dog->owner);
+        $this->assertEquals('William', $dog->getOwner());
     }
 
     public function testContainerEnvironmentVariables()
@@ -173,10 +173,15 @@ class Dog implements AnimalInterface
     public function __construct(string $name = 'Unknown')
     {
         $this->name = $name;
+        $this->owner = "Unknown";
     }
     public function getName(): string
     {
         return $this->name;
+    }
+    public function getOwner(): string
+    {
+        return $this->owner;
     }
     public function setOwner(string $name)
     {
@@ -187,5 +192,6 @@ class Dog implements AnimalInterface
 interface AnimalInterface
 {
     public function getName(): string;
+    public function getOwner(): string;
     public function setOwner(string $name);
 }
