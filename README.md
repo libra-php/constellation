@@ -6,17 +6,6 @@ Celestial PHP framework library.
 (Very early stages of development)
 
 
-#### Goals
-- Eventually replace libra-php/framework
-- Full test coverage
-- Experiment with new PHP 8 features
-- Full documentation
-
-
-#### Documentation
-- Coming soon
-
-
 #### Contribute
 - Anyone is welcome to contribute to the project.
 
