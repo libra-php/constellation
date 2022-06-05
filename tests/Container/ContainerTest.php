@@ -48,7 +48,7 @@ class ContainerTest extends TestCase
     public function testContainerDefinitions()
     {
         $container = Container::getInstance();
-        
+
         // Test constructor (DI\create) injections
         $container->setDefinitions([
             "Constellation\Tests\Container\Animal" => \DI\create()
@@ -82,7 +82,7 @@ class ContainerTest extends TestCase
         // Test setter/method injections
         $container->setDefinitions([
             "Constellation\Tests\Container\Dog" => \DI\autowire()
-            ->method("setOwner", "Bobby")
+                ->method("setOwner", "Bobby")
         ]);
         $dog = $container->build()->get("Constellation\Tests\Container\Dog");
         $this->assertInstanceOf(Dog::class, $dog);
@@ -91,7 +91,7 @@ class ContainerTest extends TestCase
         // Test property injections
         $container->setDefinitions([
             "Constellation\Tests\Container\Dog" => \DI\autowire()
-            ->property("owner", "William")
+                ->property("owner", "William")
         ]);
         $dog = $container->build()->get("Constellation\Tests\Container\Dog");
         $this->assertInstanceOf(Dog::class, $dog);
@@ -125,7 +125,9 @@ class ContainerTest extends TestCase
     }
 }
 
-class ContainerConcreteStub {}
+class ContainerConcreteStub
+{
+}
 
 class Foo
 {
