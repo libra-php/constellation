@@ -6,9 +6,5 @@ Celestial PHP framework library.
 (Very early stages of development)
 
 
-#### Contribute
-- Anyone is welcome to contribute to the project.
-
-
 #### License
 The MIT License (MIT)
