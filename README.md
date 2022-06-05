@@ -21,4 +21,7 @@ Celestial PHP framework library.
 - Anyone is welcome to contribute to the project.
 
 
+#### License
+The MIT License (MIT)
+
 Copyright (c) 2022 Libra PHP. All Rights Reserved.
