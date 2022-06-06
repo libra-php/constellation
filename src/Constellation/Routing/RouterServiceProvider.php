@@ -38,12 +38,14 @@ class RouterServiceProvider extends ServiceProvider
                         $request_method = strtoupper(end($temp));
                         $attribute = $attribute->getArguments();
                         list($uri, $name, $middleware) = $attribute;
-                        Routes::$routes[] = new Route(
-                            $uri,
-                            $name,
-                            $middleware,
-                            $request_method
-                        );
+                        $hash = md5($uri);
+                        if (!key_exists($hash, Routes::$routes))
+                            Routes::$routes[$hash] = new Route(
+                                $uri,
+                                $name,
+                                $middleware,
+                                $request_method
+                            );
                     }
                 }
             }
