@@ -20,7 +20,8 @@
         }
     ],
     "require": {
-        "php-di/php-di": "^6.4"
+        "php-di/php-di": "^6.4",
+        "composer/composer": "^2.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9"

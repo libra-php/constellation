@@ -4,6 +4,9 @@ namespace Constellation\Container;
 
 use DI\ContainerBuilder;
 
+/**
+ * @class Container
+ */
 class Container
 {
     protected static $instance;

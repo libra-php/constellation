@@ -1,0 +1,49 @@
+<?php
+
+namespace Constellation\Routing;
+
+use Constellation\Service\ServiceProvider;
+use Constellation\Config\Application;
+use Composer\Autoload\ClassMapGenerator;
+use ReflectionObject;
+
+class RouterServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this->mergeConfig(__DIR__ . "/Config.php", "routing");
+    }
+
+    public function boot()
+    {
+        $this->registerRoutes();
+    }
+
+    public function classMap(string $path)
+    {
+        return ClassMapGenerator::createMap($path);
+    }
+
+    public function registerRoutes()
+    {
+        $controller_paths = Application::$routing['controller_paths'];
+        foreach ($controller_paths as $path) {
+            $controllers = $this->classMap($path);
+            foreach ($controllers as $controller => $controller_path) {
+                $object = new ReflectionObject(new $controller());
+                foreach ($object->getMethods() as $method) {
+                    // Get attributes from method
+                    $attributes = $method->getAttributes();
+                    foreach ($attributes as $attribute) {
+                        $temp = explode("\\", $attribute->getName());
+                        $request_method = strtoupper(end($temp));
+                        // Attributes
+                        $attribute = $attribute->getArguments();
+                        list($uri, $name, $middleware) = $attribute;
+                        Routes::$routes[] = new Route($uri, $name, $middleware, $request_method);
+                    }
+                }
+            }
+        }
+    }
+}
