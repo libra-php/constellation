@@ -7,5 +7,5 @@ namespace Constellation\Routing;
  */
 return [
     "enabled" => true,
-    "controller_paths" => []
+    "controller_paths" => [],
 ];

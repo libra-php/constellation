@@ -17,7 +17,8 @@ class ServiceProvider
         $default_config = require_once $default;
         if (is_array($default_config) && !empty($default_config)) {
             foreach ($default_config as $key => $value) {
-                Application::$$target[$key] = Application::$$target[$key] ?? $value;
+                Application::$$target[$key] =
+                    Application::$$target[$key] ?? $value;
             }
         }
     }

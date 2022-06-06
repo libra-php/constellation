@@ -12,9 +12,9 @@ class Router
 {
     protected static $instance;
 
-    public function __construct(
-        private Request $request
-    ){}
+    public function __construct(private Request $request)
+    {
+    }
 
     public static function getInstance()
     {

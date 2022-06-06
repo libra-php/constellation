@@ -26,7 +26,7 @@ class RouterServiceProvider extends ServiceProvider
 
     public function registerRoutes()
     {
-        $controller_paths = Application::$routing['controller_paths'];
+        $controller_paths = Application::$routing["controller_paths"];
         foreach ($controller_paths as $path) {
             $controllers = $this->classMap($path);
             foreach ($controllers as $controller => $controller_path) {
@@ -40,7 +40,12 @@ class RouterServiceProvider extends ServiceProvider
                         // Attributes
                         $attribute = $attribute->getArguments();
                         list($uri, $name, $middleware) = $attribute;
-                        Routes::$routes[] = new Route($uri, $name, $middleware, $request_method);
+                        Routes::$routes[] = new Route(
+                            $uri,
+                            $name,
+                            $middleware,
+                            $request_method
+                        );
                     }
                 }
             }

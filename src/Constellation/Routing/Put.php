@@ -11,8 +11,8 @@ class Put extends Route
         private string $uri,
         private string $name,
         private string|array $middleware,
-        private string $method,
-    ){
+        private string $method
+    ) {
         parent::__construct($uri, $name, $middleware, "PUT");
     }
 }

@@ -8,4 +8,3 @@ namespace Constellation\Controller;
 class Controller
 {
 }
-

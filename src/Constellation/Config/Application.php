@@ -9,6 +9,6 @@ class Application
     public static $routing = [];
 
     public static $services = [
-        "routing" => RouterServiceProvider::class
+        "routing" => RouterServiceProvider::class,
     ];
 }
