@@ -32,12 +32,10 @@ class RouterServiceProvider extends ServiceProvider
             foreach ($controllers as $controller => $controller_path) {
                 $object = new ReflectionObject(new $controller());
                 foreach ($object->getMethods() as $method) {
-                    // Get attributes from method
                     $attributes = $method->getAttributes();
                     foreach ($attributes as $attribute) {
                         $temp = explode("\\", $attribute->getName());
                         $request_method = strtoupper(end($temp));
-                        // Attributes
                         $attribute = $attribute->getArguments();
                         list($uri, $name, $middleware) = $attribute;
                         Routes::$routes[] = new Route(
