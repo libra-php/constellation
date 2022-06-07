@@ -66,4 +66,15 @@ class RouterTest extends TestCase
         $this->assertSame($endpoint, "home");
         $this->assertSame((new $class_name())->$endpoint(), "Honey! I'm home!");
     }
+
+    public function testRouterResolutionWithGetParam()
+    {
+        $router = (new Router(new Request("/?test=derp", "GET")))->matchRoute();
+        $class_name = $router->getRoute()?->getClassName();
+        $endpoint = $router->getRoute()?->getEndpoint();
+        $this->assertNotNull($router->getRoute());
+        $this->assertSame($class_name, TestController::class);
+        $this->assertSame($endpoint, "index");
+        $this->assertSame((new $class_name())->$endpoint(), "Hello, world!");
+    }
 }
