@@ -42,7 +42,9 @@ class RouterServiceProvider extends ServiceProvider
                         $temp = explode("\\", $attribute->getName());
                         $request_method = strtoupper(end($temp));
                         $attribute = $attribute->getArguments();
-                        list($uri, $name, $middleware) = $attribute;
+                        $uri = $attribute[0] ?? "";
+                        $name = $attribute[1] ?? null;
+                        $middleware = $attribute[2] ?? [];
                         $hash = md5($uri);
                         if (!key_exists($hash, Routes::getRoutes())) {
                             Routes::addRoute(

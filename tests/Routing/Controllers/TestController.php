@@ -10,9 +10,15 @@ use Constellation\Routing\Get;
  */
 class TestController extends Controller
 {
-    #[Get('/', 'test.index', [])]
+    #[Get('/', 'test.index')]
     public function index()
     {
         return "Hello, world!";
+    }
+
+    #[Get('/home', 'test.home')]
+    public function home()
+    {
+        return "Honey! I'm home!";
     }
 }
