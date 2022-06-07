@@ -36,4 +36,12 @@ class Route
     {
         return $this->method;
     }
+    public function getClassName()
+    {
+        return $this->class_name;
+    }
+    public function getEndpoint()
+    {
+        return $this->endpoint;
+    }
 }

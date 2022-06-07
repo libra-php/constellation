@@ -13,5 +13,6 @@ class TestController extends Controller
     #[Get('/', 'test.index', [])]
     public function index()
     {
+        return "Hello, world!";
     }
 }

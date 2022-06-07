@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Constellation\Routing\Router;
 use Constellation\Routing\Routes;
 use Constellation\Service\Services;
+use Constellation\Tests\Routing\Controllers\TestController;
 
 /**
  * @class RouterTest
@@ -50,6 +51,11 @@ class RouterTest extends TestCase
     public function testRouterResolution()
     {
         $router = (new Router(new Request("/", "GET")))->matchRoute();
+        $class_name = $router->getRoute()?->getClassName();
+        $endpoint = $router->getRoute()->getEndpoint();
         $this->assertNotNull($router->getRoute());
+        $this->assertSame($class_name, TestController::class);
+        $this->assertSame($endpoint, "index");
+        $this->assertSame((new $class_name())->$endpoint(), "Hello, world!");
     }
 }
