@@ -10,7 +10,7 @@ use DI\ContainerBuilder;
 class Container
 {
     protected static $instance;
-    private $definitions = [];
+    private array $definitions = [];
     private $container;
     private $builder;
 
@@ -43,5 +43,6 @@ class Container
         if (!empty($defintions)) {
             $this->definitions = $defintions;
         }
+        return $this;
     }
 }

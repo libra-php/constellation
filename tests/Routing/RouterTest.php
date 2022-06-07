@@ -46,4 +46,10 @@ class RouterTest extends TestCase
     {
         $this->assertTrue(count(Routes::getRoutes()) > 0);
     }
+
+    public function testRouterResolution()
+    {
+        $router = (new Router(new Request("/", "GET")))->matchRoute();
+        $this->assertNotNull($router->getRoute());
+    }
 }
