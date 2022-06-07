@@ -42,6 +42,5 @@ class RouterTest extends TestCase
     public function testRouterBootServiceProvider()
     {
         $this->assertTrue(count(Routes::getRoutes()) > 0);
-        print_r(Routes::getRoutes());
     }
 }

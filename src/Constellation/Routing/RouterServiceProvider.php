@@ -16,7 +16,8 @@ class RouterServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->registerRoutes();
+        if (Application::$routing["enabled"])
+            $this->registerRoutes();
     }
 
     public function classMap(string $path)
