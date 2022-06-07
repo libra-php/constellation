@@ -17,4 +17,21 @@ class Route
         private string $method
     ) {
     }
+
+    public function getUri()
+    {
+        return $this->uri;
+    }
+    public function getName()
+    {
+        return $this->name;
+    }
+    public function getMiddleware()
+    {
+        return $this->middleware;
+    }
+    public function getMethod()
+    {
+        return $this->method;
+    }
 }
