@@ -11,6 +11,9 @@ use Constellation\Routing\Router;
 use Constellation\Routing\Routes;
 use Constellation\Service\Services;
 
+/**
+ * @class RouterTest
+ */
 class RouterTest extends TestCase
 {
     public function setUp(): void

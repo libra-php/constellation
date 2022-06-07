@@ -7,6 +7,9 @@ use Constellation\Config\Application;
 use Composer\Autoload\ClassMapGenerator;
 use ReflectionObject;
 
+/**
+ * @class RouterServiceProvider
+ */
 class RouterServiceProvider extends ServiceProvider
 {
     public function register()

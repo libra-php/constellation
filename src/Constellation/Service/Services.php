@@ -4,6 +4,9 @@ namespace Constellation\Service;
 
 use Constellation\Config\Application;
 
+/**
+ * @class Services
+ */
 class Services
 {
     public function registerServices()

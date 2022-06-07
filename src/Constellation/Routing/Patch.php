@@ -4,6 +4,9 @@ namespace Constellation\Routing;
 
 use Attribute;
 
+/**
+ * @class Patch
+ */
 #[Attribute]
 class Patch extends Route
 {

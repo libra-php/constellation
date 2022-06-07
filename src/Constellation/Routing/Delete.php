@@ -4,6 +4,9 @@ namespace Constellation\Routing;
 
 use Attribute;
 
+/**
+ * @class Delete
+ */
 #[Attribute]
 class Delete extends Route
 {

@@ -7,6 +7,9 @@ namespace Constellation\Tests\Container;
 use PHPUnit\Framework\TestCase;
 use Constellation\Container\Container;
 
+/**
+ * @class ContainerTest
+ */
 class ContainerTest extends TestCase
 {
     public function testContainerCanResolve(): void

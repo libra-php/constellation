@@ -4,6 +4,9 @@ namespace Constellation\Routing;
 
 use Attribute;
 
+/**
+ * @class Post
+ */
 #[Attribute]
 class Post extends Route
 {

@@ -4,6 +4,9 @@ namespace Constellation\Config;
 
 use Constellation\Routing\RouterServiceProvider;
 
+/**
+ * @class Application
+ */
 class Application
 {
     public static $routing = [];

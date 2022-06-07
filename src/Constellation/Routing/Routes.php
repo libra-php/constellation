@@ -2,6 +2,9 @@
 
 namespace Constellation\Routing;
 
+/**
+ * @class Routes
+ */
 class Routes
 {
     private static $routes = [];

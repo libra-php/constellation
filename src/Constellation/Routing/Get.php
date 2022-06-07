@@ -4,6 +4,9 @@ namespace Constellation\Routing;
 
 use Attribute;
 
+/**
+ * @class Get
+ */
 #[Attribute]
 class Get extends Route
 {
