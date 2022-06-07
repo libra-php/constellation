@@ -52,7 +52,7 @@ class RouterTest extends TestCase
     {
         $router = (new Router(new Request("/", "GET")))->matchRoute();
         $class_name = $router->getRoute()?->getClassName();
-        $endpoint = $router->getRoute()->getEndpoint();
+        $endpoint = $router->getRoute()?->getEndpoint();
         $this->assertNotNull($router->getRoute());
         $this->assertSame($class_name, TestController::class);
         $this->assertSame($endpoint, "index");
