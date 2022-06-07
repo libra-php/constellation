@@ -14,7 +14,9 @@ class Route
         private string $uri,
         private string $name,
         private string|array $middleware,
-        private string $method
+        private string $method,
+        private ?string $class_name = null,
+        private ?string $endpoint = null
     ) {
     }
 

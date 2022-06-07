@@ -51,7 +51,9 @@ class RouterServiceProvider extends ServiceProvider
                                     $uri,
                                     $name,
                                     $middleware,
-                                    $request_method
+                                    $request_method,
+                                    "$controller",
+                                    $method->getName()
                                 )
                             );
                         }
