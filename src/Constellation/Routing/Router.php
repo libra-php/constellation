@@ -37,7 +37,7 @@ class Router
             if ($matches) {
                 array_walk(
                     $matches[0],
-                    fn(&$item, $key) => ($item =
+                    fn(&$item,) => ($item =
                         "#" . str_replace("?", "\?", $item) . "#")
                 );
                 return preg_replace($matches[0], $vars, $uri);
