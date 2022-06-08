@@ -50,7 +50,7 @@ class RouterTest extends TestCase
 
     public function testRouterResolution()
     {
-        $router = (new Router(new Request("/home", "GET")))->matchRoute();
+        $router = (new Router(new Request("/home")))->matchRoute();
         $class_name = $router->getRoute()?->getClassName();
         $endpoint = $router->getRoute()?->getEndpoint();
         $this->assertNotNull($router->getRoute());
@@ -61,7 +61,7 @@ class RouterTest extends TestCase
 
     public function testRouterResolutionWithGetParam()
     {
-        $router = (new Router(new Request("/?test=derp", "GET")))->matchRoute();
+        $router = (new Router(new Request("/?test=derp")))->matchRoute();
         $class_name = $router->getRoute()?->getClassName();
         $endpoint = $router->getRoute()?->getEndpoint();
         $this->assertNotNull($router->getRoute());
@@ -72,16 +72,16 @@ class RouterTest extends TestCase
 
     public function testRouterExtractParams()
     {
-        $router = (new Router(new Request("/william/age/35", "GET")))->matchRoute();
+        $router = (new Router(new Request("/william/age/35")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '35']);
 
-        $router = (new Router(new Request("/user/06c16921-9b95-41f7-8407-c1a113a68be3/profile/100339", "GET")))->matchRoute();
+        $router = (new Router(new Request("/user/06c16921-9b95-41f7-8407-c1a113a68be3/profile/100339")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '06c16921-9b95-41f7-8407-c1a113a68be3', 1 => '100339']);
 
-        $router = (new Router(new Request("/photo/200302/edit", "GET")))->matchRoute();
+        $router = (new Router(new Request("/photo/200302/edit")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '200302', 1 => 'edit']);
 
-        $router = (new Router(new Request("/photo/200302", "GET")))->matchRoute();
+        $router = (new Router(new Request("/photo/200302")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '200302']);
     }
 }
