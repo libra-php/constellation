@@ -11,10 +11,12 @@ use Exception;
 class Request
 {
     public static $instance;
+    private $uri;
+    private $method;
 
     public function __construct(
-        private ?string $uri = null,
-        private ?string $method = null
+        ?string $uri = null,
+        ?string $method = null
     ) {
         if ($uri) {
             $this->setUri($uri);
@@ -75,7 +77,6 @@ class Request
 
     private function filterUri(string $uri)
     {
-        // Remove params from uri
         $uri = strtok($uri, "?");
         return htmlspecialchars(strip_tags($uri));
     }
