@@ -24,6 +24,5 @@ class Services
             $target = new $service();
             $target->boot();
         }
-        return $this;
     }
 }

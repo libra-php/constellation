@@ -2,6 +2,7 @@
 
 namespace Constellation\Http;
 
+use Constellation\Container\Container;
 use Exception;
 
 /**
@@ -36,7 +37,7 @@ class Request
     public static function getInstance()
     {
         if (is_null(static::$instance)) {
-            static::$instance = new static();
+            static::$instance = Container::getInstance()->get(Request::class);
         }
 
         return static::$instance;
