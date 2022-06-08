@@ -21,4 +21,22 @@ class TestController extends Controller
     {
         return "Honey! I'm home!";
     }
+
+    #[Get('/william/age/{age}', 'test.age')]
+    public function age($age)
+    {
+        return $age;
+    }
+
+    #[Get('/user/{uuid}/profile/{id}', 'test.profile')]
+    public function profile($uuid, $id)
+    {
+        return [$uuid, $id];
+    }
+
+    #[Get('/photo/{id}/{command?}', 'test.photo')]
+    public function photo($id, $command = null)
+    {
+        return [$id, $command];
+    }
 }
