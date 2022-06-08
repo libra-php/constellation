@@ -18,6 +18,19 @@ class Router
     {
     }
 
+    public static function findRoute(string $name)
+    {
+        $routes = array_filter(Routes::getRoutes(), function ($route) use (
+            $name
+        ) {
+            return $route->getName() === $name;
+        });
+        if (!empty($routes) && count($routes) === 1) {
+            return reset($routes);
+        }
+        return null;
+    }
+
     public static function getInstance()
     {
         if (is_null(static::$instance)) {
@@ -59,17 +72,15 @@ class Router
             $result = preg_match($re, $attribute_uri, $matches);
 
             if ($matches) {
-                 // The params will be stored in index 1, 2, etc
-                // URI is index 0, so we can remove that and re-index
                 unset($matches[0]);
                 $matches = array_values($matches);
-                $this->params = $matches; 
+                $this->params = $matches;
             }
 
             return $result;
         });
-        if ($route_array && count($route_array) == 1) {
-            $this->route = array_pop($route_array);
+        if ($route_array && count($route_array) === 1) {
+            $this->route = reset($route_array);
         }
         return $this;
     }

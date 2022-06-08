@@ -48,7 +48,7 @@ class RouterTest extends TestCase
         $this->assertTrue(count(Routes::getRoutes()) > 0);
     }
 
-    public function testRouterResolution()
+    public function testRouterBasicRouteResolution()
     {
         $router = (new Router(new Request("/home")))->matchRoute();
         $class_name = $router->getRoute()?->getClassName();
@@ -59,7 +59,7 @@ class RouterTest extends TestCase
         $this->assertSame((new $class_name())->$endpoint(), "Honey! I'm home!");
     }
 
-    public function testRouterResolutionWithGetParam()
+    public function testRouterRouteResolutionWithGetParam()
     {
         $router = (new Router(new Request("/?test=derp")))->matchRoute();
         $class_name = $router->getRoute()?->getClassName();
@@ -70,18 +70,31 @@ class RouterTest extends TestCase
         $this->assertSame((new $class_name())->$endpoint(), "Hello, world!");
     }
 
-    public function testRouterExtractParams()
+    public function testRouterBasicUriSingleParam()
     {
         $router = (new Router(new Request("/william/age/35")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '35']);
+    }
 
+    public function testRouterBasicUriMultiParam()
+    {
         $router = (new Router(new Request("/user/06c16921-9b95-41f7-8407-c1a113a68be3/profile/100339")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '06c16921-9b95-41f7-8407-c1a113a68be3', 1 => '100339']);
+    }
 
+    public function testRouterBasicUriOptionalParam()
+    {
         $router = (new Router(new Request("/photo/200302/edit")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '200302', 1 => 'edit']);
 
         $router = (new Router(new Request("/photo/200302")))->matchRoute();
         $this->assertSame($router->getParams(), [0 => '200302']);
+    }
+
+    public function testRouterFindRoute()
+    {
+        $route = Router::findRoute("test.age");
+        $this->assertNotNull($route);
+        $this->assertSame("test.age", $route?->getName());
     }
 }

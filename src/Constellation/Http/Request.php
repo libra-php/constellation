@@ -14,10 +14,8 @@ class Request
     private $uri;
     private $method;
 
-    public function __construct(
-        ?string $uri = null,
-        ?string $method = null
-    ) {
+    public function __construct(?string $uri = null, ?string $method = null)
+    {
         if ($uri) {
             $this->setUri($uri);
         } else {
