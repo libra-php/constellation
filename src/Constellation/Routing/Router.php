@@ -20,11 +20,7 @@ class Router
 
     public static function findRoute(string $name)
     {
-        $routes = array_filter(Routes::getRoutes(), function ($route) use (
-            $name
-        ) {
-            return $route->getName() === $name;
-        });
+        $routes = array_filter(Routes::getRoutes(), fn($route) => $route->getName() === $name);
         if (!empty($routes) && count($routes) === 1) {
             return reset($routes);
         }
