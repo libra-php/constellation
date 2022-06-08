@@ -14,8 +14,7 @@ class Request
 
     public function __construct(
         private ?string $uri = null,
-        private ?string $method = null,
-        private array $data = []
+        private ?string $method = null
     ) {
         if ($uri) {
             $this->setUri($uri);
@@ -27,11 +26,7 @@ class Request
         } else {
             $this->setMethod($_SERVER["REQUEST_METHOD"] ?? "GET");
         }
-        if (!empty($data)) {
-            $this->setData($data);
-        } else {
-            $this->setData($_REQUEST ?? []);
-        }
+        $this->setData($_REQUEST ?? []);
     }
 
     public static function getInstance()
