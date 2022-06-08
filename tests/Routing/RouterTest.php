@@ -21,13 +21,9 @@ class RouterTest extends TestCase
     {
         Application::$routing = [
             "enabled" => true,
-            "controller_paths" => [
-                __DIR__ . "/Controllers",
-            ]
+            "controller_paths" => [__DIR__ . "/Controllers"],
         ];
-        (new Services)
-            ->registerServices()
-            ->bootServices();
+        (new Services())->registerServices()->bootServices();
     }
 
     public function testRouterInstance()
@@ -39,8 +35,11 @@ class RouterTest extends TestCase
 
     public function testRouterRegisterServiceProvider()
     {
-        $this->assertTrue(Application::$routing['enabled']);
-        $this->assertSame(Application::$routing['controller_paths'], [__DIR__ . "/Controllers"]);
+        $this->assertTrue(Application::$routing["enabled"]);
+        $this->assertSame(
+            [__DIR__ . "/Controllers"],
+            Application::$routing["controller_paths"]
+        );
     }
 
     public function testRouterBootServiceProvider()
@@ -54,9 +53,9 @@ class RouterTest extends TestCase
         $class_name = $router->getRoute()?->getClassName();
         $endpoint = $router->getRoute()?->getEndpoint();
         $this->assertNotNull($router->getRoute());
-        $this->assertSame($class_name, TestController::class);
-        $this->assertSame($endpoint, "home");
-        $this->assertSame((new $class_name())->$endpoint(), "Honey! I'm home!");
+        $this->assertSame(TestController::class, $class_name);
+        $this->assertSame("home", $endpoint);
+        $this->assertSame("Honey! I'm home!", (new $class_name())->$endpoint());
     }
 
     public function testRouterRouteResolutionWithGetParam()
@@ -65,30 +64,37 @@ class RouterTest extends TestCase
         $class_name = $router->getRoute()?->getClassName();
         $endpoint = $router->getRoute()?->getEndpoint();
         $this->assertNotNull($router->getRoute());
-        $this->assertSame($class_name, TestController::class);
-        $this->assertSame($endpoint, "index");
-        $this->assertSame((new $class_name())->$endpoint(), "Hello, world!");
+        $this->assertSame(TestController::class, $class_name);
+        $this->assertSame("index", $endpoint);
+        $this->assertSame("Hello, world!", (new $class_name())->$endpoint());
     }
 
     public function testRouterBasicUriSingleParam()
     {
         $router = (new Router(new Request("/william/age/35")))->matchRoute();
-        $this->assertSame($router->getParams(), [0 => '35']);
+        $this->assertSame([0 => "35"], $router->getParams());
     }
 
     public function testRouterBasicUriMultiParam()
     {
-        $router = (new Router(new Request("/user/06c16921-9b95-41f7-8407-c1a113a68be3/profile/100339")))->matchRoute();
-        $this->assertSame($router->getParams(), [0 => '06c16921-9b95-41f7-8407-c1a113a68be3', 1 => '100339']);
+        $router = (new Router(
+            new Request(
+                "/user/06c16921-9b95-41f7-8407-c1a113a68be3/profile/100339"
+            )
+        ))->matchRoute();
+        $this->assertSame(
+            [0 => "06c16921-9b95-41f7-8407-c1a113a68be3", 1 => "100339"],
+            $router->getParams()
+        );
     }
 
     public function testRouterBasicUriOptionalParam()
     {
         $router = (new Router(new Request("/photo/200302/edit")))->matchRoute();
-        $this->assertSame($router->getParams(), [0 => '200302', 1 => 'edit']);
+        $this->assertSame([0 => "200302", 1 => "edit"], $router->getParams());
 
         $router = (new Router(new Request("/photo/200302")))->matchRoute();
-        $this->assertSame($router->getParams(), [0 => '200302']);
+        $this->assertSame([0 => "200302"], $router->getParams());
     }
 
     public function testRouterFindRoute()
@@ -96,5 +102,18 @@ class RouterTest extends TestCase
         $route = Router::findRoute("test.age");
         $this->assertNotNull($route);
         $this->assertSame("test.age", $route?->getName());
+    }
+
+    public function testRouterBuildUri()
+    {
+        $uri = Router::buildUri(
+            "test.profile",
+            "06c16921-9b95-41f7-8407-c1a113a68be3",
+            "100339"
+        );
+        $this->assertSame(
+            "/user/06c16921-9b95-41f7-8407-c1a113a68be3/profile/100339",
+            $uri
+        );
     }
 }

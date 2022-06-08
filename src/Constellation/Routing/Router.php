@@ -31,6 +31,25 @@ class Router
         return null;
     }
 
+    public static function buildUri(string $name, ...$vars)
+    {
+        $route = Router::findRoute($name);
+        if ($route) {
+            $regex = "#({[\w\?]+})#";
+            $uri = $route->getUri();
+            preg_match_all($regex, $uri, $matches);
+            if ($matches) {
+                array_walk(
+                    $matches[0],
+                    fn(&$item, $key) => ($item =
+                        "#" . str_replace("?", "\?", $item) . "#")
+                );
+                return preg_replace($matches[0], $vars, $uri);
+            }
+        }
+        return null;
+    }
+
     public static function getInstance()
     {
         if (is_null(static::$instance)) {

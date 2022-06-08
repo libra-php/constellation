@@ -10,33 +10,30 @@ use Constellation\Routing\Get;
  */
 class TestController extends Controller
 {
-    #[Get('/', 'test.index')]
+    #[Get("/", "test.index")]
     public function index()
     {
         return "Hello, world!";
     }
 
-    #[Get('/home', 'test.home')]
+    #[Get("/home", "test.home")]
     public function home()
     {
         return "Honey! I'm home!";
     }
 
-    #[Get('/william/age/{age}', 'test.age')]
-    public function age($age)
-    {
+    #[Get("/william/age/{age}", "test.age")]
+    public function age($age) {
         return $age;
     }
 
-    #[Get('/user/{uuid}/profile/{id}', 'test.profile')]
-    public function profile($uuid, $id)
-    {
+    #[Get("/user/{uuid}/profile/{id}", "test.profile")]
+    public function profile($uuid, $id) {
         return [$uuid, $id];
     }
 
-    #[Get('/photo/{id}/{command?}', 'test.photo')]
-    public function photo($id, $command = null)
-    {
+    #[Get("/photo/{id}/{command?}", "test.photo")]
+    public function photo($id, $command = null) {
         return [$id, $command];
     }
 }
