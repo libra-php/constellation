@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Constellation\Tests\Routing;
 
 use Constellation\Config\Application;
+use Constellation\Container\Container;
 use Constellation\Http\Request;
 use PHPUnit\Framework\TestCase;
 use Constellation\Routing\Router;
@@ -55,7 +56,7 @@ class RouterTest extends TestCase
         $this->assertNotNull($router->getRoute());
         $this->assertSame(TestController::class, $class_name);
         $this->assertSame("home", $endpoint);
-        $this->assertSame("Honey! I'm home!", (new $class_name())->$endpoint());
+        $this->assertSame("Honey! I'm home!", (Container::getInstance()->get($class_name))->$endpoint());
     }
 
     public function testRouterRouteResolutionWithGetParam()
@@ -66,7 +67,7 @@ class RouterTest extends TestCase
         $this->assertNotNull($router->getRoute());
         $this->assertSame(TestController::class, $class_name);
         $this->assertSame("index", $endpoint);
-        $this->assertSame("Hello, world!", (new $class_name())->$endpoint());
+        $this->assertSame("Hello, world!", (Container::getInstance()->get($class_name))->$endpoint());
     }
 
     public function testRouterBasicUriSingleParam()

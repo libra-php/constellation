@@ -5,6 +5,7 @@ namespace Constellation\Routing;
 use Constellation\Service\ServiceProvider;
 use Constellation\Config\Application;
 use Composer\Autoload\ClassMapGenerator;
+use Constellation\Container\Container;
 use ReflectionObject;
 
 /**
@@ -35,7 +36,7 @@ class RouterServiceProvider extends ServiceProvider
         foreach ($controller_paths as $path) {
             $controllers = $this->classMap($path);
             foreach ($controllers as $controller => $controller_path) {
-                $object = new ReflectionObject(new $controller());
+                $object = new ReflectionObject(Container::getInstance()->get($controller));
                 foreach ($object->getMethods() as $method) {
                     $attributes = $method->getAttributes();
                     foreach ($attributes as $attribute) {
