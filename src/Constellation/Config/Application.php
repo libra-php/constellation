@@ -3,6 +3,7 @@
 namespace Constellation\Config;
 
 use Constellation\Routing\RouterServiceProvider;
+use Constellation\Http\TwigServiceProvider;
 
 /**
  * @class Application
@@ -10,8 +11,9 @@ use Constellation\Routing\RouterServiceProvider;
 class Application
 {
     public static $routing = [];
-
+    public static $templating = [];
     public static $services = [
         "routing" => RouterServiceProvider::class,
+        "templating" => TwigServiceProvider::class,
     ];
 }
