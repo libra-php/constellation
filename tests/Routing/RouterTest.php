@@ -22,7 +22,11 @@ class RouterTest extends TestCase
     {
         Application::$routing = [
             "enabled" => true,
-            "controller_paths" => [__DIR__ . "/Controllers"],
+            "controller_path" => __DIR__ . "/Controllers",
+        ];
+        Application::$templating = [
+            "template_path" => __DIR__ . "/templates",
+            "cache_path" => __DIR__ . "/cache",
         ];
         (new Services())->registerServices()->bootServices();
     }
@@ -38,8 +42,8 @@ class RouterTest extends TestCase
     {
         $this->assertTrue(Application::$routing["enabled"]);
         $this->assertSame(
-            [__DIR__ . "/Controllers"],
-            Application::$routing["controller_paths"]
+            __DIR__ . "/Controllers",
+            Application::$routing["controller_path"]
         );
     }
 
@@ -116,5 +120,18 @@ class RouterTest extends TestCase
             "/user/06c16921-9b95-41f7-8407-c1a113a68be3/profile/100339",
             $uri
         );
+    }
+
+    public function testRouterTwigResponse()
+    {
+        $router = (new Router(new Request("/template")))->matchRoute();
+        $class_name = $router->getRoute()?->getClassName();
+        $endpoint = $router->getRoute()?->getEndpoint();
+        $class = (Container::getInstance()->get($class_name));
+        list($template, $data) = $class->$endpoint();
+        $class->template = $template;
+        $class->data = $data;
+        $class->buildResponse($router->getRoute()->getMiddleware());
+        $this->assertSame("It works!", $class->getContent());
     }
 }

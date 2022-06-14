@@ -12,8 +12,8 @@ class Response
         $this->interface->boot();
     }
 
-    public function __destruct()
+    public function content()
     {
-        $this->interface->handle();
+        return $this->interface->handle();
     }
 }

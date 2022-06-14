@@ -13,21 +13,22 @@ class TwigResponse implements ResponseInterface
     private $loader;
     private $twig;
 
-    public function __construct(private string $template_filename, private array $data = [])
+    public function __construct(private string $template, private array $data = [])
     {}
 
     public function boot()
     {
-        $template_path = Application::$routing["template_path"];
+        $template_path = Application::$templating["template_path"];
         $this->loader = new Twig\Loader\FilesystemLoader($template_path);
-        $default_options = [
-            "cache" => Application::$routing["cache_path"]
+        $options = [
+            "cache" => Application::$templating["cache_path"],
+            "auto_reload" => true,
         ];
-        $this->twig = new Twig\Environment($this->loader, [...Application::$routing['twig_options'], ...$default_options]);
+        $this->twig = new Twig\Environment($this->loader, $options);
     }
 
     public function handle()
     {
-        $this->twig->render($this->template_filename, $this->data);
+        return $this->twig->render($this->template, $this->data);
     }
 }

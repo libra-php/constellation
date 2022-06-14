@@ -19,7 +19,7 @@ class ServiceProvider
     {
         if (file_exists($default)) {
             $default_config = require_once $default;
-            if (is_array($default_config) && !empty($default_config)) {
+            if (is_array($default_config)) {
                 Application::$$target = array_merge(
                     $default_config,
                     Application::$$target
