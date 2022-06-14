@@ -27,7 +27,7 @@ class TestController extends Controller
     {
         return ["test/index.html", ["test" => "It works!"]];
     }
-    
+
     #[Get("/william/age/{age}", "test.age")]
     public function age($age) {
         return $age;

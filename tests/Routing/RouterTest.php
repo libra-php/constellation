@@ -60,7 +60,12 @@ class RouterTest extends TestCase
         $this->assertNotNull($router->getRoute());
         $this->assertSame(TestController::class, $class_name);
         $this->assertSame("home", $endpoint);
-        $this->assertSame("Honey! I'm home!", (Container::getInstance()->get($class_name))->$endpoint());
+        $this->assertSame(
+            "Honey! I'm home!",
+            Container::getInstance()
+                ->get($class_name)
+                ->$endpoint()
+        );
     }
 
     public function testRouterRouteResolutionWithGetParam()
@@ -71,7 +76,12 @@ class RouterTest extends TestCase
         $this->assertNotNull($router->getRoute());
         $this->assertSame(TestController::class, $class_name);
         $this->assertSame("index", $endpoint);
-        $this->assertSame("Hello, world!", (Container::getInstance()->get($class_name))->$endpoint());
+        $this->assertSame(
+            "Hello, world!",
+            Container::getInstance()
+                ->get($class_name)
+                ->$endpoint()
+        );
     }
 
     public function testRouterBasicUriSingleParam()
@@ -127,7 +137,7 @@ class RouterTest extends TestCase
         $router = (new Router(new Request("/template")))->matchRoute();
         $class_name = $router->getRoute()?->getClassName();
         $endpoint = $router->getRoute()?->getEndpoint();
-        $class = (Container::getInstance()->get($class_name));
+        $class = Container::getInstance()->get($class_name);
         list($template, $data) = $class->$endpoint();
         $class->template = $template;
         $class->data = $data;

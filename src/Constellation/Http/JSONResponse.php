@@ -9,11 +9,9 @@ class JSONResponse implements ResponseInterface
 {
     public function boot()
     {
-
     }
 
     public function handle()
     {
-
     }
 }

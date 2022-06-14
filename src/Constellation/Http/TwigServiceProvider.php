@@ -14,4 +14,3 @@ class TwigServiceProvider extends ServiceProvider
         $this->mergeConfig(__DIR__ . "/Config.php", "templating");
     }
 }
-

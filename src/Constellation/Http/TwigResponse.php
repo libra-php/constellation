@@ -13,8 +13,11 @@ class TwigResponse implements ResponseInterface
     private $loader;
     private $twig;
 
-    public function __construct(private string $template, private array $data = [])
-    {}
+    public function __construct(
+        private string $template,
+        private array $data = []
+    ) {
+    }
 
     public function boot()
     {

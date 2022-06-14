@@ -35,7 +35,9 @@ class RouterServiceProvider extends ServiceProvider
         $path = Application::$routing["controller_path"];
         $controllers = $this->classMap($path);
         foreach ($controllers as $controller => $controller_path) {
-            $object = new ReflectionObject(Container::getInstance()->get($controller));
+            $object = new ReflectionObject(
+                Container::getInstance()->get($controller)
+            );
             foreach ($object->getMethods() as $method) {
                 $attributes = $method->getAttributes();
                 foreach ($attributes as $attribute) {
