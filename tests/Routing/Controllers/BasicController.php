@@ -11,4 +11,10 @@ class BasicController
     {
         return "Hello, world";
     } 
+
+    #[Get('/basic/{name}/{age}', 'basic.name-age', ['test'])] 
+    public function index1($name, $age)
+    {
+        return "Hello {$name}, you're {$age} years old.";
+    } 
 }

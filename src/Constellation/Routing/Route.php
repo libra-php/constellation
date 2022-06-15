@@ -10,6 +10,8 @@ use Attribute;
 #[Attribute]
 class Route
 {
+    private $params = [];
+
     public function __construct(
         private string $uri,
         private ?string $name = null,
@@ -43,5 +45,13 @@ class Route
     public function getEndpoint()
     {
         return $this->endpoint;
+    }
+    public function setParams(array $params)
+    {
+        $this->params = $params;
+    }
+    public function getParams()
+    {
+        return $this->params;
     }
 }

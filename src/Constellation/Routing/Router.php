@@ -14,7 +14,6 @@ use Exception;
 class Router
 {
     protected static $instance;
-    private array $params;
     private ?Route $route = null;
 
     public function __construct(private array $config, private Request $request)
@@ -38,11 +37,6 @@ class Router
     public function getRoute()
     {
         return $this->route;
-    }
-
-    public function getParams()
-    {
-        return $this->params;
     }
 
     public function classMap(string $path)
@@ -124,9 +118,10 @@ class Router
 
     public function matchRoute()
     {
+        $params = [];
         $route_array = array_filter(
             Routes::getInstance()->getRoutes(),
-            function ($route) {
+            function ($route) use (&$params) {
                 $uri = $route->getUri();
                 // Replace placeholders
                 $uri = preg_replace("#{[\w]+}#", "([\w\-\_]+)", $uri);
@@ -140,17 +135,21 @@ class Router
                 $attribute_uri = $this->request->getUri();
                 $result = preg_match($re, $attribute_uri, $matches);
 
+                // If there are matches bind to params
                 if ($matches) {
                     unset($matches[0]);
                     $matches = array_values($matches);
-                    $this->params = $matches;
+                    $params = $matches;
                 }
 
                 return $result;
             }
         );
+        // Set the route if we matched one successfully
         if ($route_array && count($route_array) === 1) {
             $this->route = reset($route_array);
+            if (!empty($params)) $this->route->setParams($params);
+
         }
         return $this;
     }
