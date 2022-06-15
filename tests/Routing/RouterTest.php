@@ -17,10 +17,9 @@ class RouterTest extends TestCase
     {
         $container = Container::getInstance();
         $container->setDefinitions([
-            Router::class => \DI\autowire()
-                ->constructorParameter("config", [
-                    "controller_path" => __DIR__ . "/Controllers"
-                ])
+            Router::class => \DI\autowire()->constructorParameter("config", [
+                "controller_path" => __DIR__ . "/Controllers",
+            ]),
         ]);
         $container->build();
         $this->router = Router::getInstance();

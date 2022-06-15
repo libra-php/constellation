@@ -14,8 +14,11 @@ class Request
     private $uri;
     private $method;
 
-    public function __construct(string $uri = "/", string $method = "GET", $data = [])
-    {
+    public function __construct(
+        string $uri = "/",
+        string $method = "GET",
+        array $data = []
+    ) {
         $this->setUri($uri);
         $this->setMethod($method);
         $this->setData($data);

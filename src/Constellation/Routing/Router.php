@@ -54,7 +54,9 @@ class Router
     public function registerRoutes()
     {
         $path = $this->config["controller_path"];
-        if (!file_exists($path)) throw new FileNotFoundException("Controller path doesn't exist");
+        if (!file_exists($path)) {
+            throw new FileNotFoundException("Controller path doesn't exist");
+        }
         $controllers = $this->classMap($path);
         foreach ($controllers as $controller => $controller_path) {
             $object = new ReflectionObject(
@@ -93,7 +95,7 @@ class Router
     {
         $routes = array_filter(
             Routes::getInstance()->getRoutes(),
-            fn ($route) => $route->getName() === $name
+            fn($route) => $route->getName() === $name
         );
         if (!empty($routes) && count($routes) === 1) {
             return reset($routes);
@@ -111,7 +113,7 @@ class Router
             if ($matches) {
                 array_walk(
                     $matches[0],
-                    fn (&$item) => ($item =
+                    fn(&$item) => ($item =
                         "#" . str_replace("?", "\?", $item) . "#")
                 );
                 return preg_replace($matches[0], $vars, $uri);
@@ -122,28 +124,31 @@ class Router
 
     public function matchRoute()
     {
-        $route_array = array_filter(Routes::getInstance()->getRoutes(), function ($route) {
-            $uri = $route->getUri();
-            // Replace placeholders
-            $uri = preg_replace("#{[\w]+}#", "([\w\-\_]+)", $uri);
-            // Handle optional placeholders
-            $uri = preg_replace("#{[\w\?]+}#", "([\w\-\_]+)?", $uri);
-            // Escape characters
-            $clean_uri = str_replace("/", "\/?", $uri);
+        $route_array = array_filter(
+            Routes::getInstance()->getRoutes(),
+            function ($route) {
+                $uri = $route->getUri();
+                // Replace placeholders
+                $uri = preg_replace("#{[\w]+}#", "([\w\-\_]+)", $uri);
+                // Handle optional placeholders
+                $uri = preg_replace("#{[\w\?]+}#", "([\w\-\_]+)?", $uri);
+                // Escape characters
+                $clean_uri = str_replace("/", "\/?", $uri);
 
-            // Prepare URI for regex test
-            $re = "#^{$clean_uri}$#i";
-            $attribute_uri = $this->request->getUri();
-            $result = preg_match($re, $attribute_uri, $matches);
+                // Prepare URI for regex test
+                $re = "#^{$clean_uri}$#i";
+                $attribute_uri = $this->request->getUri();
+                $result = preg_match($re, $attribute_uri, $matches);
 
-            if ($matches) {
-                unset($matches[0]);
-                $matches = array_values($matches);
-                $this->params = $matches;
+                if ($matches) {
+                    unset($matches[0]);
+                    $matches = array_values($matches);
+                    $this->params = $matches;
+                }
+
+                return $result;
             }
-
-            return $result;
-        });
+        );
         if ($route_array && count($route_array) === 1) {
             $this->route = reset($route_array);
         }
