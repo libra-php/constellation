@@ -6,7 +6,7 @@ use Constellation\Http\Request;
 use Constellation\Container\Container;
 use Composer\Autoload\ClassMapGenerator;
 use ReflectionObject;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Exception;
 
 /**
  * @class Router
@@ -17,9 +17,8 @@ class Router
     private array $params;
     private ?Route $route = null;
 
-    public function __construct(private array $config)
+    public function __construct(private array $config, private Request $request)
     {
-        $this->request = Request::getInstance();
     }
 
     public static function getInstance()
@@ -55,7 +54,7 @@ class Router
     {
         $path = $this->config["controller_path"];
         if (!file_exists($path)) {
-            throw new FileNotFoundException("Controller path doesn't exist");
+            throw new Exception("Controller path doesn't exist");
         }
         $controllers = $this->classMap($path);
         foreach ($controllers as $controller => $controller_path) {
@@ -89,6 +88,7 @@ class Router
                 }
             }
         }
+        return $this;
     }
 
     public static function findRoute(string $name)
