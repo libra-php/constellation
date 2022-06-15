@@ -4,6 +4,9 @@ namespace Constellation\Routing;
 
 use Constellation\Http\Request;
 use Constellation\Container\Container;
+use Composer\Autoload\ClassMapGenerator;
+use ReflectionObject;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 /**
  * @class Router
@@ -11,42 +14,12 @@ use Constellation\Container\Container;
 class Router
 {
     protected static $instance;
-    private ?Route $route = null;
     private array $params;
+    private ?Route $route = null;
 
-    public function __construct(private Request $request)
+    public function __construct(private array $config)
     {
-    }
-
-    public static function findRoute(string $name)
-    {
-        $routes = array_filter(
-            Routes::getRoutes(),
-            fn($route) => $route->getName() === $name
-        );
-        if (!empty($routes) && count($routes) === 1) {
-            return reset($routes);
-        }
-        return null;
-    }
-
-    public static function buildUri(string $name, ...$vars)
-    {
-        $route = Router::findRoute($name);
-        if ($route) {
-            $regex = "#({[\w\?]+})#";
-            $uri = $route->getUri();
-            preg_match_all($regex, $uri, $matches);
-            if ($matches) {
-                array_walk(
-                    $matches[0],
-                    fn(&$item) => ($item =
-                        "#" . str_replace("?", "\?", $item) . "#")
-                );
-                return preg_replace($matches[0], $vars, $uri);
-            }
-        }
-        return null;
+        $this->request = Request::getInstance();
     }
 
     public static function getInstance()
@@ -73,9 +46,83 @@ class Router
         return $this->params;
     }
 
+    public function classMap(string $path)
+    {
+        return ClassMapGenerator::createMap($path);
+    }
+
+    public function registerRoutes()
+    {
+        $path = $this->config["controller_path"];
+        if (!file_exists($path)) throw new FileNotFoundException("Controller path doesn't exist");
+        $controllers = $this->classMap($path);
+        foreach ($controllers as $controller => $controller_path) {
+            $object = new ReflectionObject(
+                Container::getInstance()->get($controller)
+            );
+            foreach ($object->getMethods() as $method) {
+                $attributes = $method->getAttributes();
+                foreach ($attributes as $attribute) {
+                    $routes = Routes::getInstance();
+                    $temp = explode("\\", $attribute->getName());
+                    $request_method = strtoupper(end($temp));
+                    $attribute = $attribute->getArguments();
+                    $uri = $attribute[0] ?? "";
+                    $name = $attribute[1] ?? null;
+                    $middleware = $attribute[2] ?? [];
+                    $hash = md5($uri);
+                    if (!key_exists($hash, $routes->getRoutes())) {
+                        $routes->addRoute(
+                            $hash,
+                            new Route(
+                                $uri,
+                                $name,
+                                $middleware,
+                                $request_method,
+                                "$controller",
+                                $method->getName()
+                            )
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    public static function findRoute(string $name)
+    {
+        $routes = array_filter(
+            Routes::getInstance()->getRoutes(),
+            fn ($route) => $route->getName() === $name
+        );
+        if (!empty($routes) && count($routes) === 1) {
+            return reset($routes);
+        }
+        return null;
+    }
+
+    public static function buildUri(string $name, ...$vars)
+    {
+        $route = Router::findRoute($name);
+        if ($route) {
+            $regex = "#({[\w\?]+})#";
+            $uri = $route->getUri();
+            preg_match_all($regex, $uri, $matches);
+            if ($matches) {
+                array_walk(
+                    $matches[0],
+                    fn (&$item) => ($item =
+                        "#" . str_replace("?", "\?", $item) . "#")
+                );
+                return preg_replace($matches[0], $vars, $uri);
+            }
+        }
+        return null;
+    }
+
     public function matchRoute()
     {
-        $route_array = array_filter(Routes::getRoutes(), function ($route) {
+        $route_array = array_filter(Routes::getInstance()->getRoutes(), function ($route) {
             $uri = $route->getUri();
             // Replace placeholders
             $uri = preg_replace("#{[\w]+}#", "([\w\-\_]+)", $uri);

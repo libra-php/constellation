@@ -14,19 +14,11 @@ class Request
     private $uri;
     private $method;
 
-    public function __construct(?string $uri = null, ?string $method = null)
+    public function __construct(string $uri = "/", string $method = "GET", $data = [])
     {
-        if ($uri) {
-            $this->setUri($uri);
-        } else {
-            $this->setUri($_SERVER["REQUEST_URI"] ?? "");
-        }
-        if ($method) {
-            $this->setMethod($method);
-        } else {
-            $this->setMethod($_SERVER["REQUEST_METHOD"] ?? "GET");
-        }
-        $this->setData($_REQUEST ?? []);
+        $this->setUri($uri);
+        $this->setMethod($method);
+        $this->setData($data);
     }
 
     public static function getInstance()
@@ -38,7 +30,7 @@ class Request
         return static::$instance;
     }
 
-    public function setUri(string $uri)
+    private function setUri(string $uri)
     {
         $uri = $this->filterUri($uri);
         $this->uri = $uri;
@@ -50,7 +42,7 @@ class Request
         return $this->uri;
     }
 
-    public function setMethod(string $method)
+    private function setMethod(string $method)
     {
         $this->validateRequestMethod($method);
         $this->method = $method;
@@ -62,9 +54,9 @@ class Request
         return $this->method;
     }
 
-    public function setData(array $data)
+    private function setData(array $data)
     {
-        $this->data = $data;
+        $this->data = $this->validateData($data);
         return $this;
     }
 
@@ -73,13 +65,13 @@ class Request
         return $this->data;
     }
 
-    private function filterUri(string $uri)
+    protected function filterUri(string $uri)
     {
         $uri = strtok($uri, "?");
         return htmlspecialchars(strip_tags($uri));
     }
 
-    private function validateRequestMethod(string $method)
+    protected function validateRequestMethod(string $method)
     {
         if (
             !in_array($method, [
@@ -93,5 +85,10 @@ class Request
         ) {
             throw new Exception("Invalid request method");
         }
+    }
+
+    protected function validateData(array $data)
+    {
+        return $this->data = $data;
     }
 }

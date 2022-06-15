@@ -2,20 +2,32 @@
 
 namespace Constellation\Routing;
 
+use Constellation\Container\Container;
+
 /**
  * @class Routes
  */
 class Routes
 {
-    private static $routes = [];
+    protected static $instance;
+    private $routes = [];
 
-    public static function addRoute(string $hash, Route $route)
+    public static function getInstance()
     {
-        self::$routes[$hash] = $route;
+        if (is_null(static::$instance)) {
+            static::$instance = Container::getInstance()->get(Routes::class);
+        }
+
+        return static::$instance;
     }
 
-    public static function getRoutes()
+    public function addRoute(string $hash, Route $route)
     {
-        return self::$routes;
+        $this->routes[$hash] = $route;
+    }
+
+    public function getRoutes()
+    {
+        return $this->routes;
     }
 }
