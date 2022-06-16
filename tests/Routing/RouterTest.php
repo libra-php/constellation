@@ -82,10 +82,10 @@ class RouterTest extends TestCase
         );
         $this->router->registerRoutes()->matchRoute();
         $route = $this->router->getRoute();
-        $classname = $route->getClassname();
+        $class_name = $route->getClassName();
         $endpoint = $route->getEndpoint();
         $params = $route->getParams();
-        $class = new $classname();
+        $class = new $class_name();
         $response = $class->$endpoint(...$params);
         $this->assertSame("Hello, William. You're 18.", $response);
     }
