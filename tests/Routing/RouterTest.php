@@ -26,7 +26,7 @@ class RouterTest extends TestCase
         $container = Container::getInstance();
         $container->setDefinitions([
             Router::class => \DI\autowire()
-            ->constructorParameter("config", $this->config)
+                ->constructorParameter("config", $this->config)
         ]);
         $container->build();
         $this->router = Router::getInstance();
@@ -55,5 +55,24 @@ class RouterTest extends TestCase
         $this->router->registerRoutes()->matchRoute();
         $this->assertSame($this->router->getRoute()->getUri(), "/basic/{name}/{age}");
         $this->assertSame($this->router->getRoute()->getParams(), ["william", "35"]);
+    }
+
+    public function testRouterBuildRoute()
+    {
+        $uri = Router::buildRoute("basic.name-age", "william", 21);
+        $this->assertSame("/basic/william/21", $uri);
+    }
+
+    public function testRouterRouteEndpoint()
+    {
+        $this->router = new Router($this->config, new Request("/basic/William/18"));
+        $this->router->registerRoutes()->matchRoute();
+        $route = $this->router->getRoute();
+        $classname = $route->getClassname();
+        $endpoint =$route->getEndpoint();
+        $params = $route->getParams();
+        $class = new $classname();
+        $response = $class->$endpoint(...$params);
+        $this->assertSame("Hello, William. You're 18.", $response);
     }
 }
