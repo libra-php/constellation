@@ -39,6 +39,14 @@ class Router
         return $this->route;
     }
 
+    public function pageNotFound()
+    {
+        $protocol = $_SERVER["SERVER_PROTOCOL"] ?? "HTTP/1.0";
+        header($protocol . " 404 Not Found", true, 404);
+        print("Page not found");
+        exit;
+    }
+
     public function classMap(string $path)
     {
         return ClassMapGenerator::createMap($path);
