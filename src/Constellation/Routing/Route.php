@@ -13,10 +13,10 @@ class Route
     private $params = [];
 
     public function __construct(
+        private string $method,
         private string $uri,
         private ?string $name = null,
         private string|array $middleware = [],
-        private string $method,
         private ?string $class_name = null,
         private ?string $endpoint = null
     ) {

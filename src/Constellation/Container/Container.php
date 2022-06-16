@@ -35,7 +35,7 @@ class Container
 
     public function get($target)
     {
-        return $this->container->get($target);
+        return $this->container?->get($target);
     }
 
     public function setDefinitions(array $defintions)

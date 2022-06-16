@@ -70,10 +70,10 @@ class Router
                         $routes->addRoute(
                             $hash,
                             new Route(
+                                $request_method,
                                 $uri,
                                 $name,
                                 $middleware,
-                                $request_method,
                                 "$controller",
                                 $method->getName()
                             )

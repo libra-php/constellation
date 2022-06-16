@@ -11,11 +11,11 @@ use Attribute;
 class Post extends Route
 {
     public function __construct(
+        private string $method,
         private string $uri,
         private ?string $name = null,
         private string|array $middleware = [],
-        private string $method
     ) {
-        parent::__construct($uri, $name, $middleware, "POST");
+        parent::__construct("POST", $uri, $name, $middleware);
     }
 }
