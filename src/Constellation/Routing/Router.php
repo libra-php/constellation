@@ -89,7 +89,7 @@ class Router
     {
         $routes = array_filter(
             Routes::getInstance()->getRoutes(),
-            fn ($route) => $route->getName() === $name
+            fn($route) => $route->getName() === $name
         );
         if (!empty($routes) && count($routes) === 1) {
             return reset($routes);
@@ -107,7 +107,7 @@ class Router
             if ($matches) {
                 array_walk(
                     $matches[0],
-                    fn (&$item) => ($item =
+                    fn(&$item) => ($item =
                         "#" . str_replace("?", "\?", $item) . "#")
                 );
                 return preg_replace($matches[0], $vars, $uri);
@@ -148,7 +148,9 @@ class Router
         // Set the route if we matched one successfully
         if ($route_array && count($route_array) === 1) {
             $this->route = reset($route_array);
-            if (!empty($params)) $this->route->setParams($params);
+            if (!empty($params)) {
+                $this->route->setParams($params);
+            }
         }
         return $this;
     }

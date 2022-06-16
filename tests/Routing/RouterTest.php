@@ -25,8 +25,10 @@ class RouterTest extends TestCase
     {
         $container = Container::getInstance();
         $container->setDefinitions([
-            Router::class => \DI\autowire()
-                ->constructorParameter("config", $this->config)
+            Router::class => \DI\autowire()->constructorParameter(
+                "config",
+                $this->config
+            ),
         ]);
         $container->build();
         $this->router = Router::getInstance();
@@ -43,18 +45,27 @@ class RouterTest extends TestCase
 
     public function testRouterGetRouteByName()
     {
-        $route = Router::findRoute('basic.name-age');
-        $this->assertSame('/basic/{name}/{age}', $route->getUri());
-        $this->assertSame('basic.name-age', $route->getName());
-        $this->assertSame(['test'], $route->getMiddleware());
+        $route = Router::findRoute("basic.name-age");
+        $this->assertSame("/basic/{name}/{age}", $route->getUri());
+        $this->assertSame("basic.name-age", $route->getName());
+        $this->assertSame(["test"], $route->getMiddleware());
     }
 
     public function testRouterRouteParams()
     {
-        $this->router = new Router($this->config, new Request("/basic/william/35"));
+        $this->router = new Router(
+            $this->config,
+            new Request("/basic/william/35")
+        );
         $this->router->registerRoutes()->matchRoute();
-        $this->assertSame($this->router->getRoute()->getUri(), "/basic/{name}/{age}");
-        $this->assertSame($this->router->getRoute()->getParams(), ["william", "35"]);
+        $this->assertSame(
+            $this->router->getRoute()->getUri(),
+            "/basic/{name}/{age}"
+        );
+        $this->assertSame($this->router->getRoute()->getParams(), [
+            "william",
+            "35",
+        ]);
     }
 
     public function testRouterBuildRoute()
@@ -65,11 +76,14 @@ class RouterTest extends TestCase
 
     public function testRouterRouteEndpoint()
     {
-        $this->router = new Router($this->config, new Request("/basic/William/18"));
+        $this->router = new Router(
+            $this->config,
+            new Request("/basic/William/18")
+        );
         $this->router->registerRoutes()->matchRoute();
         $route = $this->router->getRoute();
         $classname = $route->getClassname();
-        $endpoint =$route->getEndpoint();
+        $endpoint = $route->getEndpoint();
         $params = $route->getParams();
         $class = new $classname();
         $response = $class->$endpoint(...$params);
