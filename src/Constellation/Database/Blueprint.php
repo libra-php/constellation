@@ -56,14 +56,6 @@ class Blueprint
     }
 
     /**
-     * Specify a reference table for foreign key constraint
-     * @param string $table_name Table of foreign key constraint
-     */
-    public function unique(string $table_name)
-    {
-    }
-
-    /**
      * Specify an index (compound or composite)
      * @param array $attributes Indexed attribute
      */
