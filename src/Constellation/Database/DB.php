@@ -39,7 +39,7 @@ class DB
 
     private function establishConnection()
     {
-        match ($this->config['type']) {
+        match ($this->config["type"]) {
             "mysql" => $this->mysql(),
             "pgsql" => $this->pgsql(),
             "sqlite" => $this->sqlite(),
@@ -48,17 +48,41 @@ class DB
 
     private function mysql()
     {
-        Validate::keys($this->config, ["host", "port", "dbname", "username", "password"]);
+        Validate::keys($this->config, [
+            "host",
+            "port",
+            "dbname",
+            "username",
+            "password",
+        ]);
         extract($this->config);
-        $dsn = sprintf("mysql:host=%s;port=%s;dbname=%s", $host, $port, $dbname);
+        $dsn = sprintf(
+            "mysql:host=%s;port=%s;dbname=%s",
+            $host,
+            $port,
+            $dbname
+        );
         $this->pdo = new PDO($dsn, $username, $password);
     }
 
     private function pgsql()
     {
-        Validate::keys($this->config, ["host", "port", "dbname", "username", "password"]);
+        Validate::keys($this->config, [
+            "host",
+            "port",
+            "dbname",
+            "username",
+            "password",
+        ]);
         extract($this->config);
-        $dsn = sprintf("pgsql:host=%s;port=%s;dbname=%s;user=%s;password=%s;", $host, $port, $dbname, $username, $password);
+        $dsn = sprintf(
+            "pgsql:host=%s;port=%s;dbname=%s;user=%s;password=%s;",
+            $host,
+            $port,
+            $dbname,
+            $username,
+            $password
+        );
         $this->pdo = new PDO($dsn);
     }
 
@@ -94,7 +118,7 @@ class DB
 
     public function selectVar(string $query, ...$vars)
     {
-        $result =  (array)$this->selectOne($query, ...$vars);
+        $result = (array) $this->selectOne($query, ...$vars);
         $var = array_values($result);
         return $var[0];
     }

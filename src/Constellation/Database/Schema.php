@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Constellation\Database;
 
@@ -13,6 +13,7 @@ class Schema
         return $query;
     }
 
-    public static function drop(string $table_name) {
+    public static function drop(string $table_name)
+    {
     }
 }

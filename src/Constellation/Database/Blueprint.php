@@ -13,7 +13,6 @@ class Blueprint
      */
     public function default(string $value)
     {
-
     }
 
     /**
@@ -22,7 +21,6 @@ class Blueprint
      */
     public function unique()
     {
-
     }
 
     /**
@@ -31,7 +29,6 @@ class Blueprint
      */
     public function references(string $attribute)
     {
-
     }
 
     /**
@@ -40,7 +37,6 @@ class Blueprint
      */
     public function on(string $table_name)
     {
-
     }
 
     /**
@@ -49,7 +45,6 @@ class Blueprint
      */
     public function onDelete(string $action)
     {
-
     }
 
     /**
@@ -58,7 +53,6 @@ class Blueprint
      */
     public function onUpdate(string $action)
     {
-
     }
 
     /**
@@ -67,7 +61,6 @@ class Blueprint
      */
     public function unique(string $table_name)
     {
-
     }
 
     /**
@@ -76,7 +69,6 @@ class Blueprint
      */
     public function index(array $attributes)
     {
-
     }
 
     /**
@@ -85,7 +77,6 @@ class Blueprint
      */
     public function nullable(bool $value = true)
     {
-
     }
 
     /**
@@ -94,7 +85,6 @@ class Blueprint
      */
     public function charset(string $character_set = "utf8mb4")
     {
-
     }
 
     /**
@@ -103,7 +93,6 @@ class Blueprint
      */
     public function collation(string $collation = "utf8mb4_unicode_ci")
     {
-
     }
 
     /**
@@ -112,7 +101,6 @@ class Blueprint
      */
     public function bigIncrements(string $attribute)
     {
-
     }
 
     /**
@@ -121,7 +109,6 @@ class Blueprint
      */
     public function bigInteger(string $attribute)
     {
-
     }
 
     /**
@@ -130,7 +117,6 @@ class Blueprint
      */
     public function binary(string $attribute)
     {
-
     }
 
     /**
@@ -139,7 +125,6 @@ class Blueprint
      */
     public function boolean(string $attribute)
     {
-
     }
 
     /**
@@ -149,7 +134,6 @@ class Blueprint
      */
     public function char(string $attribute, int $length)
     {
-
     }
 
     /**
@@ -159,7 +143,6 @@ class Blueprint
      */
     public function dateTime(string $attribute, int $precision)
     {
-
     }
 
     /**
@@ -168,7 +151,6 @@ class Blueprint
      */
     public function date(string $attribute)
     {
-
     }
 
     /**
@@ -179,7 +161,6 @@ class Blueprint
      */
     public function decimal(string $attribute, $precision = 8, $scale = 2)
     {
-
     }
 
     /**
@@ -190,7 +171,6 @@ class Blueprint
      */
     public function double(string $attribute, $precision = 8, $scale = 2)
     {
-
     }
 
     /**
@@ -200,7 +180,6 @@ class Blueprint
      */
     public function enum(string $attribute, array $values)
     {
-
     }
 
     /**
@@ -211,7 +190,6 @@ class Blueprint
      */
     public function float(string $attribute, int $precision = 8, int $scale = 2)
     {
-
     }
 
     /**
@@ -220,7 +198,6 @@ class Blueprint
      */
     public function foreignId(string $attribute)
     {
-
     }
 
     /**
@@ -229,7 +206,6 @@ class Blueprint
      */
     public function geometry(string $attribute)
     {
-
     }
 
     /**
@@ -239,16 +215,14 @@ class Blueprint
      */
     public function id(string $attribute)
     {
-        
     }
 
     /**
-     * Creates an auto-incrementing UNSIGNED INTEGER column 
+     * Creates an auto-incrementing UNSIGNED INTEGER column
      * @param string $attribute Name of attribute
      */
     public function increments(string $attribute)
     {
-
     }
 
     /**
@@ -257,7 +231,6 @@ class Blueprint
      */
     public function integer(string $attribute)
     {
-
     }
 
     /**
@@ -266,7 +239,6 @@ class Blueprint
      */
     public function json(string $attribute)
     {
-
     }
 
     /**
@@ -275,7 +247,6 @@ class Blueprint
      */
     public function jsonb(string $attribute)
     {
-
     }
 
     /**
@@ -284,7 +255,6 @@ class Blueprint
      */
     public function mediumIncrements(string $attribute)
     {
-
     }
 
     /**
@@ -293,7 +263,6 @@ class Blueprint
      */
     public function mediumInteger(string $attribute)
     {
-
     }
 
     /**
@@ -302,16 +271,14 @@ class Blueprint
      */
     public function mediumText(string $attribute)
     {
-
     }
 
     /**
-     * Creates a MULTILINESTRING column 
+     * Creates a MULTILINESTRING column
      * @param string $attribute Name of attribute
      */
     public function multiLineString(string $attribute)
     {
-
     }
 
     /**
@@ -320,7 +287,6 @@ class Blueprint
      */
     public function multipoint(string $attribute)
     {
-
     }
 
     /**
@@ -329,7 +295,6 @@ class Blueprint
      */
     public function multiPolygon(string $attribute)
     {
-
     }
 
     /**
@@ -338,7 +303,6 @@ class Blueprint
      */
     public function point(string $attribute)
     {
-
     }
 
     /**
@@ -347,7 +311,6 @@ class Blueprint
      */
     public function polygon(string $attribute)
     {
-
     }
 
     /**
@@ -356,7 +319,6 @@ class Blueprint
      */
     public function smallIncrements(string $attribute)
     {
-
     }
 
     /**
@@ -365,17 +327,15 @@ class Blueprint
      */
     public function smallInt(string $attribute)
     {
-
     }
 
     /**
-     * Creates a VARCHAR column 
+     * Creates a VARCHAR column
      * @param string $attribute Name of attribute
      * @param int $length Length of varchar
      */
     public function varchar(string $attribute, int $length)
     {
-
     }
 
     /**
@@ -384,7 +344,6 @@ class Blueprint
      */
     public function text(string $attribute)
     {
-
     }
 
     /**
@@ -394,17 +353,15 @@ class Blueprint
      */
     public function time(string $attribute, int $precision)
     {
-
     }
 
     /**
-     * Creates a TIMESTAMP column 
+     * Creates a TIMESTAMP column
      * @param string $attribute Name of attribute
      * @param int $precision Total digits
      */
     public function timestamp(string $attribute, int $precision)
     {
-
     }
 
     /**
@@ -413,7 +370,6 @@ class Blueprint
      */
     public function timestamps(int $precision)
     {
-
     }
 
     /**
@@ -422,7 +378,6 @@ class Blueprint
      */
     public function tinyIncrements(string $attribute)
     {
-
     }
 
     /**
@@ -431,16 +386,14 @@ class Blueprint
      */
     public function tinyInteger(string $attribute)
     {
-
     }
 
     /**
-     * Creates a TINYTEXT column 
+     * Creates a TINYTEXT column
      * @param string $attribute Name of attribute
      */
     public function tinyText(string $attribute)
     {
-
     }
 
     /**
@@ -449,7 +402,6 @@ class Blueprint
      */
     public function unsignedBigInteger(string $attribute)
     {
-
     }
 
     /**
@@ -458,9 +410,11 @@ class Blueprint
      * @param int $precision Total digits
      * @param int $scale Decimal digits
      */
-    public function unsignedDecimal(string $attribute, int $precision, int $scale)
-    {
-
+    public function unsignedDecimal(
+        string $attribute,
+        int $precision,
+        int $scale
+    ) {
     }
 
     /**
@@ -469,7 +423,6 @@ class Blueprint
      */
     public function unsignedInteger(string $attribute)
     {
-
     }
 
     /**
@@ -478,7 +431,6 @@ class Blueprint
      */
     public function unsignedMediumInteger(string $attribute)
     {
-
     }
 
     /**
@@ -487,7 +439,6 @@ class Blueprint
      */
     public function unsignedSmallInteger(string $attribute)
     {
-
     }
 
     /**
@@ -496,7 +447,6 @@ class Blueprint
      */
     public function unsignedTinyInteger(string $attribute)
     {
-
     }
 
     /**
@@ -505,7 +455,6 @@ class Blueprint
      */
     public function uuid(string $attribute)
     {
-
     }
 
     /**
@@ -514,6 +463,5 @@ class Blueprint
      */
     public function year(string $attribute)
     {
-
     }
 }

@@ -44,8 +44,8 @@ class Router
     {
         $protocol = $_SERVER["SERVER_PROTOCOL"] ?? "HTTP/1.0";
         header($protocol . " 404 Not Found", true, 404);
-        print("Page not found");
-        exit;
+        print "Page not found";
+        exit();
     }
 
     public function classMap(string $path)
