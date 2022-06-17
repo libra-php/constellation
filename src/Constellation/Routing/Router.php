@@ -2,11 +2,11 @@
 
 namespace Constellation\Routing;
 
-use Constellation\Http\Request;
-use Constellation\Container\Container;
 use Composer\Autoload\ClassMapGenerator;
+use Constellation\Container\Container;
+use Constellation\Http\Request;
+use Constellation\Validation\Validate;
 use ReflectionObject;
-use Exception;
 
 /**
  * @class Router
@@ -18,6 +18,7 @@ class Router
 
     public function __construct(private array $config, private Request $request)
     {
+        Validate::keys($this->config, ["controller_path"]);
     }
 
     public static function getInstance()
@@ -54,11 +55,7 @@ class Router
 
     public function registerRoutes()
     {
-        $path = $this->config["controller_path"];
-        if (!file_exists($path)) {
-            throw new Exception("Controller path doesn't exist");
-        }
-        $controllers = $this->classMap($path);
+        $controllers = $this->classMap($this->config["controller_path"]);
         foreach ($controllers as $controller => $controller_path) {
             $object = new ReflectionObject(
                 Container::getInstance()->get($controller)

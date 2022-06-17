@@ -6,8 +6,8 @@ namespace Constellation\Tests\Routing;
 
 use Constellation\Container\Container;
 use Constellation\Http\Request;
-use PHPUnit\Framework\TestCase;
 use Constellation\Routing\Router;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @class RouterTest
