@@ -77,7 +77,7 @@ class DB
         $stmt->execute(...$args);
         $this->time = microtime(true) - $this->time;
         if ($this->time > 1) {
-            error_log("DB: slow query took $this->time: $query");
+            error_log("DB: slow query took {$this->time}: $query");
         }
         return $stmt;
     }
