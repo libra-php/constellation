@@ -46,7 +46,7 @@ class RouterTest extends TestCase
     public function testRouterGetRouteByName()
     {
         $route = Router::findRoute("basic.name-age");
-        $this->assertSame("/basic/{name}/{age}", $route->getUri());
+        $this->assertSame("/basic/{name}/{?age}", $route->getUri());
         $this->assertSame("basic.name-age", $route->getName());
         $this->assertSame(["test"], $route->getMiddleware());
     }
@@ -60,11 +60,27 @@ class RouterTest extends TestCase
         $this->router->registerRoutes()->matchRoute();
         $this->assertSame(
             $this->router->getRoute()->getUri(),
-            "/basic/{name}/{age}"
+            "/basic/{name}/{?age}"
         );
         $this->assertSame($this->router->getRoute()->getParams(), [
             "william",
             "35",
+        ]);
+    }
+
+    public function testRouterRouteOptionalParam()
+    {
+        $this->router = new Router(
+            $this->config,
+            new Request("/basic/william")
+        );
+        $this->router->registerRoutes()->matchRoute();
+        $this->assertSame(
+            $this->router->getRoute()->getUri(),
+            "/basic/{name}/{?age}"
+        );
+        $this->assertSame($this->router->getRoute()->getParams(), [
+            "william",
         ]);
     }
 

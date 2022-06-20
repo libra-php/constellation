@@ -13,7 +13,7 @@ class BasicController extends Controller
         return "Hello, world";
     }
 
-    #[Get("/basic/{name}/{age}", "basic.name-age", ["test"])]
+    #[Get("/basic/{name}/{?age}", "basic.name-age", ["test"])]
     public function index1($name, $age) {
         return "Hello, {$name}. You're {$age}.";
     }
