@@ -319,7 +319,7 @@ class Blueprint
      * Alias of bigIncrements
      * @param string $attribute Name of attribute
      */
-    public function id(string $attribute)
+    public function id(string $attribute = "id")
     {
         $this->bigIncrements($attribute);
         return $this;
