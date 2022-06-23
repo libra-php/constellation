@@ -7,36 +7,57 @@ namespace Constellation\Database;
  */
 class Blueprint
 {
+    private array $definitions = [];
+
+    public function last()
+    {
+        return count($this->definitions) - 1;
+    }
+
+    public function appendDefinition(int $index, string $string)
+    {
+        $definition = $this->definitions[$index];
+        $this->definitions[$index] = "$definition $string";
+        return $this;
+    }
+
+    /**
+     * Add a default value to column
+     * @param string $separator Definition separator
+     */
+    public function getDefinitions(string $separator = ","): string
+    {
+        return implode($separator, $this->definitions);
+    }
+
     /**
      * Add a default value to column
      * @param string $value Default value
      */
     public function default(string $value)
     {
+        $this->appendDefinition($this->last(), "DEFAULT $value");
+        return $this;
     }
 
     /**
      * Specify a column as unique index
      * @param string $attribute Unique attribute
      */
-    public function unique()
+    public function unique(string $attribute)
     {
+        $this->definitions[] = sprintf("UNIQUE KEY %s", $attribute);
+        return $this;
     }
 
     /**
      * Specify a reference attribute for foreign key constraint
      * @param string $attribute Attribute of foreign key constraint
      */
-    public function references(string $attribute)
+    public function references(string $table_name, string $attribute)
     {
-    }
-
-    /**
-     * Specify a table for foreign key constraint
-     * @param string $attribute Table name of foreign key constraint
-     */
-    public function on(string $table_name)
-    {
+        $this->appendDefinition($this->last(), "REFERENCES $table_name($attribute)");
+        return $this;
     }
 
     /**
@@ -45,6 +66,14 @@ class Blueprint
      */
     public function onDelete(string $action)
     {
+        $this->appendDefinition($this->last(), "ON DELETE $action");
+        return $this;
+    }
+
+    public function autoIncrement()
+    {
+        $this->appendDefinition($this->last(), "AUTO INCREMENT");
+        return $this;
     }
 
     /**
@@ -53,6 +82,8 @@ class Blueprint
      */
     public function onUpdate(string $action)
     {
+        $this->appendDefinition($this->last(), "ON UPDATE $action");
+        return $this;
     }
 
     /**
@@ -61,6 +92,7 @@ class Blueprint
      */
     public function index(array $attributes)
     {
+        return $this;
     }
 
     /**
@@ -69,6 +101,10 @@ class Blueprint
      */
     public function nullable(bool $value = true)
     {
+        $index = count($this->definitions) - 1;
+        $definition = $this->definitions[$index];
+        $this->definitions[$index] = str_replace(" NOT NULL", "", $definition);
+        return $this;
     }
 
     /**
@@ -77,6 +113,7 @@ class Blueprint
      */
     public function charset(string $character_set = "utf8mb4")
     {
+        return $this;
     }
 
     /**
@@ -85,6 +122,7 @@ class Blueprint
      */
     public function collation(string $collation = "utf8mb4_unicode_ci")
     {
+        return $this;
     }
 
     /**
@@ -93,6 +131,8 @@ class Blueprint
      */
     public function bigIncrements(string $attribute)
     {
+        $this->unsignedBigInteger($attribute)->autoIncrement();
+        return $this;
     }
 
     /**
@@ -101,6 +141,8 @@ class Blueprint
      */
     public function bigInteger(string $attribute)
     {
+        $this->definitions[] = sprintf("%s BIGINT NOT NULL", $attribute);
+        return $this;
     }
 
     /**
@@ -109,6 +151,7 @@ class Blueprint
      */
     public function binary(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -117,6 +160,7 @@ class Blueprint
      */
     public function boolean(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -126,6 +170,7 @@ class Blueprint
      */
     public function char(string $attribute, int $length)
     {
+        return $this;
     }
 
     /**
@@ -133,8 +178,10 @@ class Blueprint
      * @param string $attribute Name of attribute
      * @param int $precision Total digits
      */
-    public function dateTime(string $attribute, int $precision)
+    public function dateTime(string $attribute, int $precision = 0)
     {
+        $this->definitions[] = sprintf("%s DATETIME(%s) NOT NULL", $attribute, $precision);
+        return $this;
     }
 
     /**
@@ -143,6 +190,7 @@ class Blueprint
      */
     public function date(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -153,6 +201,7 @@ class Blueprint
      */
     public function decimal(string $attribute, $precision = 8, $scale = 2)
     {
+        return $this;
     }
 
     /**
@@ -163,6 +212,7 @@ class Blueprint
      */
     public function double(string $attribute, $precision = 8, $scale = 2)
     {
+        return $this;
     }
 
     /**
@@ -172,6 +222,7 @@ class Blueprint
      */
     public function enum(string $attribute, array $values)
     {
+        return $this;
     }
 
     /**
@@ -182,14 +233,17 @@ class Blueprint
      */
     public function float(string $attribute, int $precision = 8, int $scale = 2)
     {
+        return $this;
     }
 
     /**
-     * Creates an UNSIGNED BIGINT column
+     * Creates an foreign key column
      * @param string $attribute Name of attribute
      */
-    public function foreignId(string $attribute)
+    public function foreignKey(string $attribute)
     {
+        $this->definitions[] = sprintf("FOREIGN KEY (%s)", $attribute);
+        return $this;
     }
 
     /**
@@ -198,6 +252,7 @@ class Blueprint
      */
     public function geometry(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -207,6 +262,7 @@ class Blueprint
      */
     public function id(string $attribute)
     {
+        $this->bigIncrements($attribute);
     }
 
     /**
@@ -215,6 +271,16 @@ class Blueprint
      */
     public function increments(string $attribute)
     {
+        return $this;
+    }
+
+    /**
+     * Add UNSIGNED attribute to column
+     */
+    public function unsigned()
+    {
+        $this->appendDefinition($this->last(), "UNSIGNED");
+        return $this;
     }
 
     /**
@@ -223,6 +289,7 @@ class Blueprint
      */
     public function integer(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -231,6 +298,7 @@ class Blueprint
      */
     public function json(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -239,6 +307,7 @@ class Blueprint
      */
     public function jsonb(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -247,6 +316,7 @@ class Blueprint
      */
     public function mediumIncrements(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -255,6 +325,7 @@ class Blueprint
      */
     public function mediumInteger(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -263,6 +334,7 @@ class Blueprint
      */
     public function mediumText(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -271,6 +343,7 @@ class Blueprint
      */
     public function multiLineString(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -279,6 +352,7 @@ class Blueprint
      */
     public function multipoint(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -287,6 +361,7 @@ class Blueprint
      */
     public function multiPolygon(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -295,6 +370,7 @@ class Blueprint
      */
     public function point(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -303,6 +379,7 @@ class Blueprint
      */
     public function polygon(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -311,6 +388,7 @@ class Blueprint
      */
     public function smallIncrements(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -319,6 +397,7 @@ class Blueprint
      */
     public function smallInt(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -326,8 +405,10 @@ class Blueprint
      * @param string $attribute Name of attribute
      * @param int $length Length of varchar
      */
-    public function varchar(string $attribute, int $length)
+    public function varchar(string $attribute, int $length = 255)
     {
+        $this->definitions[] = sprintf("%s VARCHAR(%s) NOT NULL", $attribute, $length);
+        return $this;
     }
 
     /**
@@ -336,6 +417,7 @@ class Blueprint
      */
     public function text(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -345,6 +427,7 @@ class Blueprint
      */
     public function time(string $attribute, int $precision)
     {
+        return $this;
     }
 
     /**
@@ -352,16 +435,21 @@ class Blueprint
      * @param string $attribute Name of attribute
      * @param int $precision Total digits
      */
-    public function timestamp(string $attribute, int $precision)
+    public function timestamp(string $attribute, int $precision = 0)
     {
+        $this->definitions[] = sprintf("%s TIMESTAMP(%s) NOT NULL", $attribute, $precision);
+        return $this;
     }
 
     /**
      * Creates created_at and updated_at columns
      * @param int $precision Total digits
      */
-    public function timestamps(int $precision)
+    public function timestamps(int $precision = 0)
     {
+        $this->datetime("created_at");
+        $this->timestamp("updated_at")->onUpdate("CURRENT_TIMESTAMP");
+        return $this;
     }
 
     /**
@@ -370,6 +458,7 @@ class Blueprint
      */
     public function tinyIncrements(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -378,6 +467,7 @@ class Blueprint
      */
     public function tinyInteger(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -386,6 +476,7 @@ class Blueprint
      */
     public function tinyText(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -394,6 +485,8 @@ class Blueprint
      */
     public function unsignedBigInteger(string $attribute)
     {
+        $this->bigInteger($attribute)->unsigned();
+        return $this;
     }
 
     /**
@@ -407,6 +500,7 @@ class Blueprint
         int $precision,
         int $scale
     ) {
+        return $this;
     }
 
     /**
@@ -415,6 +509,7 @@ class Blueprint
      */
     public function unsignedInteger(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -423,6 +518,7 @@ class Blueprint
      */
     public function unsignedMediumInteger(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -431,6 +527,7 @@ class Blueprint
      */
     public function unsignedSmallInteger(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -439,6 +536,7 @@ class Blueprint
      */
     public function unsignedTinyInteger(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -447,6 +545,7 @@ class Blueprint
      */
     public function uuid(string $attribute)
     {
+        return $this;
     }
 
     /**
@@ -455,5 +554,6 @@ class Blueprint
      */
     public function year(string $attribute)
     {
+        return $this;
     }
 }
