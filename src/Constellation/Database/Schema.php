@@ -2,18 +2,21 @@
 
 namespace Constellation\Database;
 
+use Closure;
+
 /**
  * @class Schema
  */
 class Schema
 {
-    public static function create(string $table_name, callable $blueprint)
+    public static function create(string $table_name, Closure $callback)
     {
-        $create_table = $blueprint(new Blueprint());
+        $blueprint = new Blueprint();
+        $callback($blueprint);
         return sprintf(
             "CREATE TABLE IF NOT EXISTS %s (%s)",
             $table_name,
-            $create_table->getDefinitions()
+            $blueprint->getDefinitions()
         );
     }
 

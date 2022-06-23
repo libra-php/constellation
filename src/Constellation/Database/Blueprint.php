@@ -121,10 +121,9 @@ class Blueprint
      * Specify an index (compound or composite)
      * @param array $attributes Indexed attribute
      */
-    public function index(array $attributes)
+    public function index(array $attribute)
     {
         $this->definitions[] = sprintf("INDEX (%s)", $attribute);
-        return $this;
         return $this;
     }
 
