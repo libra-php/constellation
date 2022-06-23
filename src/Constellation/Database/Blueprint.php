@@ -185,10 +185,11 @@ class Blueprint
     /**
      * Creates a BLOB column
      * @param string $attribute Name of attribute
+     * @param int $length Length of varchar
      */
-    public function binary(string $attribute)
+    public function binary(string $attribute, int $length)
     {
-        $this->definitions[] = sprintf("%s BLOB NOT NULL", $attribute);
+        $this->definitions[] = sprintf("%s BINARY(%s) NOT NULL", $attribute, $length);
         return $this;
     }
 
@@ -638,7 +639,7 @@ class Blueprint
      */
     public function uuid(string $attribute)
     {
-        $this->definitions[] = sprintf("%s UUID NOT NULL", $attribute);
+        $this->binary($attribute, 16);
         return $this;
     }
 
