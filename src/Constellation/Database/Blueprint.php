@@ -14,10 +14,38 @@ class Blueprint
         return count($this->definitions) - 1;
     }
 
+    public function getDefinition(int $index)
+    {
+        return key_exists($index, $this->definitions)
+            ? $this->definitions[$index]
+            : null;
+    }
+
+    public function lastDefinition()
+    {
+        return $this->getDefinition($this->last());
+    }
+
     public function appendDefinition(int $index, string $string)
     {
-        $definition = $this->definitions[$index];
+        $definition = $this->getDefinition($index);
         $this->definitions[$index] = "$definition $string";
+        return $this;
+    }
+
+    public function insertDefinition(int $index, int $pos, string $string)
+    {
+        if (key_exists($index, $this->definitions)) {
+            $definition = $this->definitions[$index];
+            if ($pos <= strlen($definition)) {
+                $this->definitions[$index] = substr_replace(
+                    $definition,
+                    $string,
+                    $pos,
+                    0
+                );
+            }
+        }
         return $this;
     }
 
@@ -25,7 +53,7 @@ class Blueprint
      * Add a default value to column
      * @param string $separator Definition separator
      */
-    public function getDefinitions(string $separator = ","): string
+    public function getDefinitions(string $separator = ", "): string
     {
         return implode($separator, $this->definitions);
     }
@@ -46,7 +74,7 @@ class Blueprint
      */
     public function unique(string $attribute)
     {
-        $this->definitions[] = sprintf("UNIQUE KEY %s", $attribute);
+        $this->definitions[] = sprintf("UNIQUE KEY (%s)", $attribute);
         return $this;
     }
 
@@ -56,7 +84,10 @@ class Blueprint
      */
     public function references(string $table_name, string $attribute)
     {
-        $this->appendDefinition($this->last(), "REFERENCES $table_name($attribute)");
+        $this->appendDefinition(
+            $this->last(),
+            "REFERENCES $table_name($attribute)"
+        );
         return $this;
     }
 
@@ -92,18 +123,25 @@ class Blueprint
      */
     public function index(array $attributes)
     {
+        $this->definitions[] = sprintf("INDEX (%s)", $attribute);
+        return $this;
         return $this;
     }
 
     /**
      * Allow NULL values to be inserted into the column
-     * @param boolean $value Explicit setting of null
      */
-    public function nullable(bool $value = true)
+    public function nullable()
     {
         $index = count($this->definitions) - 1;
-        $definition = $this->definitions[$index];
-        $this->definitions[$index] = str_replace(" NOT NULL", "", $definition);
+        if (key_exists($index, $this->definitions)) {
+            $definition = $this->definitions[$index];
+            $this->definitions[$index] = str_replace(
+                " NOT NULL",
+                "",
+                $definition
+            );
+        }
         return $this;
     }
 
@@ -151,6 +189,7 @@ class Blueprint
      */
     public function binary(string $attribute)
     {
+        $this->definitions[] = sprintf("%s BLOB NOT NULL", $attribute);
         return $this;
     }
 
@@ -160,6 +199,7 @@ class Blueprint
      */
     public function boolean(string $attribute)
     {
+        $this->definitions[] = sprintf("%s BOOLEAN NOT NULL", $attribute);
         return $this;
     }
 
@@ -170,6 +210,11 @@ class Blueprint
      */
     public function char(string $attribute, int $length)
     {
+        $this->definitions[] = sprintf(
+            "%s CHAR(%s) NOT NULL",
+            $attribute,
+            $length
+        );
         return $this;
     }
 
@@ -180,7 +225,11 @@ class Blueprint
      */
     public function dateTime(string $attribute, int $precision = 0)
     {
-        $this->definitions[] = sprintf("%s DATETIME(%s) NOT NULL", $attribute, $precision);
+        $this->definitions[] = sprintf(
+            "%s DATETIME(%s) NOT NULL",
+            $attribute,
+            $precision
+        );
         return $this;
     }
 
@@ -190,6 +239,7 @@ class Blueprint
      */
     public function date(string $attribute)
     {
+        $this->definitions[] = sprintf("%s DATE NOT NULL", $attribute);
         return $this;
     }
 
@@ -237,8 +287,18 @@ class Blueprint
     }
 
     /**
+     * Creates an primary key column
+     * @param string $attribute Name of attribute(s)
+     */
+    public function primaryKey(string $attribute)
+    {
+        $this->definitions[] = sprintf("PRIMARY KEY (%s)", $attribute);
+        return $this;
+    }
+
+    /**
      * Creates an foreign key column
-     * @param string $attribute Name of attribute
+     * @param string $attribute Name of attribute(s)
      */
     public function foreignKey(string $attribute)
     {
@@ -263,6 +323,7 @@ class Blueprint
     public function id(string $attribute)
     {
         $this->bigIncrements($attribute);
+        return $this;
     }
 
     /**
@@ -271,6 +332,7 @@ class Blueprint
      */
     public function increments(string $attribute)
     {
+        $this->unsignedInteger($attribute)->autoIncrement();
         return $this;
     }
 
@@ -279,7 +341,10 @@ class Blueprint
      */
     public function unsigned()
     {
-        $this->appendDefinition($this->last(), "UNSIGNED");
+        $pos = strpos($this->lastDefinition(), "NOT NULL");
+        if ($pos) {
+            $this->insertDefinition($this->last(), $pos, "UNSIGNED ");
+        }
         return $this;
     }
 
@@ -289,6 +354,7 @@ class Blueprint
      */
     public function integer(string $attribute)
     {
+        $this->definitions[] = sprintf("%s INTEGER NOT NULL", $attribute);
         return $this;
     }
 
@@ -298,6 +364,7 @@ class Blueprint
      */
     public function json(string $attribute)
     {
+        $this->definitions[] = sprintf("%s JSON NOT NULL", $attribute);
         return $this;
     }
 
@@ -307,6 +374,7 @@ class Blueprint
      */
     public function jsonb(string $attribute)
     {
+        $this->definitions[] = sprintf("%s JSONB NOT NULL", $attribute);
         return $this;
     }
 
@@ -316,6 +384,7 @@ class Blueprint
      */
     public function mediumIncrements(string $attribute)
     {
+        $this->unsignedMediumInteger($attribute)->autoIncrement();
         return $this;
     }
 
@@ -325,6 +394,7 @@ class Blueprint
      */
     public function mediumInteger(string $attribute)
     {
+        $this->definitions[] = sprintf("%s MEDIUMINT NOT NULL", $attribute);
         return $this;
     }
 
@@ -334,6 +404,7 @@ class Blueprint
      */
     public function mediumText(string $attribute)
     {
+        $this->definitions[] = sprintf("%s MEDIUMTEXT NOT NULL", $attribute);
         return $this;
     }
 
@@ -388,6 +459,7 @@ class Blueprint
      */
     public function smallIncrements(string $attribute)
     {
+        $this->unsignedSmallInteger($attribute)->autoIncrement();
         return $this;
     }
 
@@ -397,6 +469,7 @@ class Blueprint
      */
     public function smallInt(string $attribute)
     {
+        $this->definitions[] = sprintf("%s SMALLINT NOT NULL", $attribute);
         return $this;
     }
 
@@ -407,7 +480,11 @@ class Blueprint
      */
     public function varchar(string $attribute, int $length = 255)
     {
-        $this->definitions[] = sprintf("%s VARCHAR(%s) NOT NULL", $attribute, $length);
+        $this->definitions[] = sprintf(
+            "%s VARCHAR(%s) NOT NULL",
+            $attribute,
+            $length
+        );
         return $this;
     }
 
@@ -417,6 +494,7 @@ class Blueprint
      */
     public function text(string $attribute)
     {
+        $this->definitions[] = sprintf("%s TEXT NOT NULL", $attribute);
         return $this;
     }
 
@@ -427,6 +505,11 @@ class Blueprint
      */
     public function time(string $attribute, int $precision)
     {
+        $this->definitions[] = sprintf(
+            "%s TIME(%s) NOT NULL",
+            $attribute,
+            $precision
+        );
         return $this;
     }
 
@@ -437,7 +520,11 @@ class Blueprint
      */
     public function timestamp(string $attribute, int $precision = 0)
     {
-        $this->definitions[] = sprintf("%s TIMESTAMP(%s) NOT NULL", $attribute, $precision);
+        $this->definitions[] = sprintf(
+            "%s TIMESTAMP(%s) NOT NULL",
+            $attribute,
+            $precision
+        );
         return $this;
     }
 
@@ -458,6 +545,7 @@ class Blueprint
      */
     public function tinyIncrements(string $attribute)
     {
+        $this->unsignedTinyInteger($attribute)->autoIncrement();
         return $this;
     }
 
@@ -467,6 +555,7 @@ class Blueprint
      */
     public function tinyInteger(string $attribute)
     {
+        $this->definitions[] = sprintf("%s TINYINT NOT NULL", $attribute);
         return $this;
     }
 
@@ -476,6 +565,7 @@ class Blueprint
      */
     public function tinyText(string $attribute)
     {
+        $this->definitions[] = sprintf("%s TINYTEXT NOT NULL", $attribute);
         return $this;
     }
 
@@ -509,6 +599,7 @@ class Blueprint
      */
     public function unsignedInteger(string $attribute)
     {
+        $this->integer($attribute)->unsigned();
         return $this;
     }
 
@@ -518,6 +609,7 @@ class Blueprint
      */
     public function unsignedMediumInteger(string $attribute)
     {
+        $this->mediumInteger($attribute)->unsigned();
         return $this;
     }
 
@@ -527,6 +619,7 @@ class Blueprint
      */
     public function unsignedSmallInteger(string $attribute)
     {
+        $this->smallInt($attribute)->unsigned();
         return $this;
     }
 
@@ -536,6 +629,7 @@ class Blueprint
      */
     public function unsignedTinyInteger(string $attribute)
     {
+        $this->tinyInteger($attribute)->unsigned();
         return $this;
     }
 
@@ -545,6 +639,7 @@ class Blueprint
      */
     public function uuid(string $attribute)
     {
+        $this->definitions[] = sprintf("%s UUID NOT NULL", $attribute);
         return $this;
     }
 
@@ -554,6 +649,7 @@ class Blueprint
      */
     public function year(string $attribute)
     {
+        $this->definitions[] = sprintf("%s YEAR NOT NULL", $attribute);
         return $this;
     }
 }

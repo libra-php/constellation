@@ -79,9 +79,7 @@ class RouterTest extends TestCase
             $this->router->getRoute()->getUri(),
             "/basic/{name}/{?age}"
         );
-        $this->assertSame($this->router->getRoute()->getParams(), [
-            "william",
-        ]);
+        $this->assertSame($this->router->getRoute()->getParams(), ["william"]);
     }
 
     public function testRouterBuildRoute()

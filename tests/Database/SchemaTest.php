@@ -15,15 +15,19 @@ class SchemaTest extends TestCase
 {
     public function testSchemaCreateBlueprint()
     {
-        $create_blueprint_schema = Schema::create("test", function(Blueprint $blueprint) {
+        $schema_create = Schema::create("test", function (
+            Blueprint $blueprint
+        ) {
             $blueprint->id("id");
-            $blueprint->varchar("first_name");
-            $blueprint->varchar("middle_name")->nullable();
-            $blueprint->varchar("last_name");
+            $blueprint->varchar("email");
+            $blueprint->varchar("name")->nullable();
             $blueprint->timestamps();
+            $blueprint->primaryKey("id");
             return $blueprint;
         });
-        print_r($create_blueprint_schema);
-        die("----TEST----");
+        $this->assertSame(
+            "CREATE TABLE IF NOT EXISTS test (id BIGINT UNSIGNED NOT NULL AUTO INCREMENT, email VARCHAR(255) NOT NULL, name VARCHAR(255), created_at DATETIME(0) NOT NULL, updated_at TIMESTAMP(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id))",
+            $schema_create
+        );
     }
 }
