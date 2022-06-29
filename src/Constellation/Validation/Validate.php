@@ -4,6 +4,9 @@ namespace Constellation\Validation;
 
 use Exception;
 
+/**
+ * @class Validate
+ */
 class Validate
 {
     public static function keys(array $config, array $keys)

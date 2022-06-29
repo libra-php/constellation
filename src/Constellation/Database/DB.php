@@ -6,6 +6,9 @@ use Constellation\Container\Container;
 use Constellation\Validation\Validate;
 use PDO;
 
+/**
+ * @class DB
+ */
 class DB
 {
     protected static $instance;
