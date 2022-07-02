@@ -13,32 +13,8 @@ use Constellation\Database\Blueprint;
  */
 class SchemaTest extends TestCase
 {
-    public function testSchemaCreateBlueprint()
-    {
-        $schema_create = Schema::create("test", function (
-            Blueprint $table
-        ) {
-            $table->id("id");
-            $table->varchar("email");
-            $table->varchar("name")->nullable();
-            $table->timestamps();
-            $table->primaryKey("id");
-        });
-        $this->assertSame(
-            "CREATE TABLE IF NOT EXISTS test (".
-            "id BIGINT UNSIGNED NOT NULL AUTO INCREMENT, ".
-            "email VARCHAR(255) NOT NULL, ".
-            "name VARCHAR(255), ".
-            "created_at DATETIME(0) NOT NULL, ".
-            "updated_at TIMESTAMP(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP, ".
-            "PRIMARY KEY (id))",
-            $schema_create
-        );
-    }
-
     public function testSchemaUserCreateBlueprint()
     {
-
         $schema_create = Schema::create("users", function (
             Blueprint $table
         ) {

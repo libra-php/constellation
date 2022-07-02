@@ -189,7 +189,11 @@ class Blueprint
      */
     public function binary(string $attribute, int $length)
     {
-        $this->definitions[] = sprintf("%s BINARY(%s) NOT NULL", $attribute, $length);
+        $this->definitions[] = sprintf(
+            "%s BINARY(%s) NOT NULL",
+            $attribute,
+            $length
+        );
         return $this;
     }
 
