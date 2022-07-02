@@ -2,8 +2,9 @@
 
 namespace Constellation\Http;
 
-use Constellation\Validation\Validate;
-
+/**
+ * @class ApiResponse
+ */
 class ApiResponse implements IResponse
 {
     private array $payload = [];
@@ -11,7 +12,8 @@ class ApiResponse implements IResponse
     public function __construct(private ?array $data)
     {
     }
-    public function prepare()
+
+    public function prepare(): void
     {
         // Do something with the data?
         $this->payload["success"] =
@@ -19,9 +21,13 @@ class ApiResponse implements IResponse
         $this->payload["message"] = $data["message"] ?? "";
         $this->payload["ts"] = time();
         $this->payload["date"] = date("Y-m-d H:i:s");
+        $this->payload["data"] = $this->data;
     }
-    public function execute()
+
+    public function execute(): never
     {
-        echo json_encode($this->payload);
+        header("Content-Type: application/json; charset=utf-8");
+        echo json_encode($this->payload, JSON_PRETTY_PRINT);
+        exit();
     }
 }

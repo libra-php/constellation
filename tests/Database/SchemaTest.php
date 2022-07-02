@@ -15,9 +15,7 @@ class SchemaTest extends TestCase
 {
     public function testSchemaUserCreateBlueprint()
     {
-        $schema_create = Schema::create("users", function (
-            Blueprint $table
-        ) {
+        $schema_create = Schema::create("users", function (Blueprint $table) {
             $table->id();
             $table->uuid("uuid");
             $table->varchar("name");
@@ -28,16 +26,16 @@ class SchemaTest extends TestCase
             $table->primaryKey("id");
         });
         $this->assertSame(
-            "CREATE TABLE IF NOT EXISTS users (".
-            "id BIGINT UNSIGNED NOT NULL AUTO INCREMENT, ".
-            "uuid BINARY(16) NOT NULL, ".
-            "name VARCHAR(255) NOT NULL, ".
-            "email VARCHAR(255) NOT NULL, ".
-            "password BINARY(40) NOT NULL, ".
-            "created_at DATETIME(0) NOT NULL, ".
-            "updated_at TIMESTAMP(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP, ".
-            "UNIQUE KEY (email), ".
-            "PRIMARY KEY (id))",
+            "CREATE TABLE IF NOT EXISTS users (" .
+                "id BIGINT UNSIGNED NOT NULL AUTO INCREMENT, " .
+                "uuid BINARY(16) NOT NULL, " .
+                "name VARCHAR(255) NOT NULL, " .
+                "email VARCHAR(255) NOT NULL, " .
+                "password BINARY(40) NOT NULL, " .
+                "created_at DATETIME(0) NOT NULL, " .
+                "updated_at TIMESTAMP(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP, " .
+                "UNIQUE KEY (email), " .
+                "PRIMARY KEY (id))",
             $schema_create
         );
     }

@@ -34,7 +34,7 @@ class DB
     public static function getInstance()
     {
         if (is_null(static::$instance)) {
-            static::$instance = Container::getInstance()->get(Database::class);
+            static::$instance = Container::getInstance()->get(DB::class);
         }
 
         return static::$instance;

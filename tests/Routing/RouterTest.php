@@ -32,9 +32,9 @@ class RouterTest extends TestCase
                 $this->config
             ),
             Environment::class => function () {
-                $loader = new FilesystemLoader(__DIR__."/views");
+                $loader = new FilesystemLoader(__DIR__ . "/views");
                 return new Environment($loader, [
-                    "cache" => __DIR__."/cache",
+                    "cache" => __DIR__ . "/cache",
                     "auto_reload" => true,
                 ]);
             },

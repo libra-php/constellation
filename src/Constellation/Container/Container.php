@@ -10,11 +10,11 @@ use DI\ContainerBuilder;
 class Container
 {
     protected static $instance;
-    private array|string $definitions = "";
+    private array|string $definitions = [];
     private $container;
     private $builder;
 
-    public static function getInstance()
+    public static function getInstance(): static
     {
         if (is_null(static::$instance)) {
             static::$instance = new static();
@@ -23,7 +23,7 @@ class Container
         return static::$instance;
     }
 
-    public function build()
+    public function build(): Container
     {
         $this->builder = new ContainerBuilder();
         if (!empty($this->definitions)) {
@@ -38,7 +38,7 @@ class Container
         return $this->container?->get($target);
     }
 
-    public function setDefinitions(array|string $defintions)
+    public function setDefinitions(array|string $defintions): Container
     {
         if (!empty($defintions) || is_string($defintions)) {
             $this->definitions = $defintions;
