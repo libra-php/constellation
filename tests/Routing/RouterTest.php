@@ -8,6 +8,8 @@ use Constellation\Container\Container;
 use Constellation\Http\Request;
 use Constellation\Routing\Router;
 use PHPUnit\Framework\TestCase;
+use Twig\Loader\FilesystemLoader;
+use Twig\Environment;
 
 /**
  * @class RouterTest
@@ -29,6 +31,13 @@ class RouterTest extends TestCase
                 "config",
                 $this->config
             ),
+            Environment::class => function () {
+                $loader = new FilesystemLoader(__DIR__."/views");
+                return new Environment($loader, [
+                    "cache" => __DIR__."/cache",
+                    "auto_reload" => true,
+                ]);
+            },
         ]);
         $container->build();
         $this->router = Router::getInstance();
@@ -99,7 +108,8 @@ class RouterTest extends TestCase
         $class_name = $route->getClassName();
         $endpoint = $route->getEndpoint();
         $params = $route->getParams();
-        $class = new $class_name();
+        $container = Container::getInstance();
+        $class = $container->get($class_name);
         $response = $class->$endpoint(...$params);
         $this->assertSame("Hello, William. You're 18.", $response);
     }
