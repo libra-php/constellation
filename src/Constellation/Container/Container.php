@@ -3,6 +3,7 @@
 namespace Constellation\Container;
 
 use DI\ContainerBuilder;
+use Psr\Container\ContainerInterface;
 
 /**
  * @class Container
@@ -11,8 +12,8 @@ class Container
 {
     protected static $instance;
     private array|string $definitions = [];
-    private $container;
-    private $builder;
+    private ContainerInterface $container;
+    private ContainerBuilder $builder;
 
     public static function getInstance(): static
     {
