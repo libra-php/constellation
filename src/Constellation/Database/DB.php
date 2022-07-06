@@ -109,6 +109,11 @@ class DB
         return $stmt;
     }
 
+    public function query(string $query, ...$args)
+    {
+        return $this->run($query, $args);
+    }
+
     public function selectRow(string $query, ...$args)
     {
         return $this->run($query, $args)->fetchObject();
