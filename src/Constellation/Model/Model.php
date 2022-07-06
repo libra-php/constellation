@@ -33,13 +33,16 @@ class Model
                 $this->attributes = $result[0];
             }
         } else {
-            $result = $this->db->run("DESCRIBE $this->table")->fetchAll(PDO::FETCH_COLUMN);
+            $result = $this->db
+                ->run("DESCRIBE $this->table")
+                ->fetchAll(PDO::FETCH_COLUMN);
             if ($result) {
-                $this->attributes = $result;
+                foreach ($result as $one) {
+                    $this->attributes[$one] = null;
+                }
             }
         }
     }
-
 
     private function stmt(array $list, $seperator)
     {
