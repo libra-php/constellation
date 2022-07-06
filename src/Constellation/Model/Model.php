@@ -10,13 +10,12 @@ class Model
     private array $attributes = [];
     public function __construct(
         private DB $db,
-        private string $table, 
-        private array $key, 
+        private string $table,
+        private array $key,
         private ?array $id = null
     ) {
-
         if (!is_null($id)) {
-            $this->init(); 
+            $this->init();
         }
     }
 
@@ -41,12 +40,14 @@ class Model
     public function init()
     {
         $where_clause = $this->stmt($this->key, " AND ");
-        $result = $this->db->run(
-            "SELECT * 
+        $result = $this->db
+            ->run(
+                "SELECT * 
             FROM $this->table 
             WHERE $where_clause",
-            $this->id
-        )->fetchAll(PDO::FETCH_ASSOC);
+                $this->id
+            )
+            ->fetchAll(PDO::FETCH_ASSOC);
         if ($result) {
             $this->attributes = $result[0];
         }
