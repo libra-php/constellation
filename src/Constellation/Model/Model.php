@@ -14,10 +14,32 @@ class Model
         private array $key,
         private ?array $id = null
     ) {
-        if (!is_null($id)) {
-            $this->init();
+        $this->loadAttributes();
+    }
+
+    public function loadAttributes()
+    {
+        if ($this->id) {
+            $where_clause = $this->stmt($this->key, " AND ");
+            $result = $this->db
+                ->run(
+                    "SELECT * 
+                FROM $this->table 
+                WHERE $where_clause",
+                    $this->id
+                )
+                ->fetchAll(PDO::FETCH_ASSOC);
+            if ($result) {
+                $this->attributes = $result[0];
+            }
+        } else {
+            $result = $this->db->run("DESCRIBE $this->table")->fetchAll(PDO::FETCH_COLUMN);
+            if ($result) {
+                $this->attributes = $result;
+            }
         }
     }
+
 
     private function stmt(array $list, $seperator)
     {
@@ -37,23 +59,7 @@ class Model
         return array_values($this->attributes);
     }
 
-    public function init()
-    {
-        $where_clause = $this->stmt($this->key, " AND ");
-        $result = $this->db
-            ->run(
-                "SELECT * 
-            FROM $this->table 
-            WHERE $where_clause",
-                $this->id
-            )
-            ->fetchAll(PDO::FETCH_ASSOC);
-        if ($result) {
-            $this->attributes = $result[0];
-        }
-    }
-
-    public function write()
+    public function update()
     {
         $update_statement = $this->stmt($this->attributeKeys(), ", ");
         $where_clause = $this->stmt($this->key, " AND ");
