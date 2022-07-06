@@ -17,4 +17,9 @@ class Validate
             }
         }
     }
+
+    public static function request(string $request_item, array $ruleset)
+    {
+        // IMPLEMENT ME!
+    }
 }

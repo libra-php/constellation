@@ -37,8 +37,10 @@ class Auth
 
     public static function signOut(): void
     {
-        $_SESSION = [];
-        session_destroy();
+        if (!empty($_SESSION)) {
+            $_SESSION = [];
+            session_destroy();
+        }
     }
 
     public static function register(array $attributes)

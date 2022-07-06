@@ -2,15 +2,17 @@
 
 namespace Constellation\Controller;
 
+use Constellation\Http\Request;
 use Constellation\Routing\Router;
 use Twig\Environment;
+use Constellation\Validation\Validate;
 
 /**
  * @class Controller
  */
 class Controller
 {
-    public function __construct(protected Environment $twig)
+    public function __construct(protected Environment $twig, protected Request $request)
     {
     }
 
@@ -30,5 +32,14 @@ class Controller
             },
         ];
         return $this->twig->render($template, $payload);
+    }
+
+    public function validateRequest(array $data) 
+    {
+        // IMPLEMENT ME!
+        foreach ($data as $request_item => $ruleset) {
+            Validate::request($request_item, $ruleset);
+        }
+        return $this->request->getData();
     }
 }
