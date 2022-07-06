@@ -15,10 +15,12 @@ class Router
 {
     protected static $instance;
     private ?Route $route = null;
+    private $request_method;
 
     public function __construct(private array $config, private Request $request)
     {
         Validate::keys($this->config, ["controller_path"]);
+        $this->request_method = $_SERVER["REQUEST_METHOD"];
     }
 
     public static function getInstance()
@@ -70,7 +72,7 @@ class Router
                     $uri = $attribute[0] ?? "";
                     $name = $attribute[1] ?? null;
                     $middleware = $attribute[2] ?? [];
-                    $hash = md5($uri);
+                    $hash = md5($request_method.$uri);
                     if (!key_exists($hash, $routes->getRoutes())) {
                         $routes->addRoute(
                             $hash,
@@ -147,7 +149,7 @@ class Router
                     $params = $matches;
                 }
 
-                return $result;
+                return $result && $route->getMethod() === $this->request_method;
             }
         );
         // Set the route if we matched one successfully
