@@ -112,7 +112,9 @@ class Model
             SET $update_statement",
             $values
         );
-        if ($result) $this->refresh();
+        if ($result) {
+            $this->refresh();
+        }
         return $result;
     }
 
@@ -128,7 +130,9 @@ class Model
             WHERE $where_clause",
             [...$values, ...$this->id]
         );
-        if ($result) $this->refresh();
+        if ($result) {
+            $this->refresh();
+        }
         return $result;
     }
 
