@@ -20,7 +20,6 @@ class Router
     public function __construct(private array $config, private Request $request)
     {
         Validate::keys($this->config, ["controller_path"]);
-        $this->request_method = $_SERVER["REQUEST_METHOD"];
     }
 
     public static function getInstance()
@@ -149,7 +148,7 @@ class Router
                     $params = $matches;
                 }
 
-                return $result && $route->getMethod() === $this->request_method;
+                return $result && $route->getMethod() === $this->request->getMethod();
             }
         );
         // Set the route if we matched one successfully
