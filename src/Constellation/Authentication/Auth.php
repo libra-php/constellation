@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class Auth
 {
-    public static function isLoggedIn()
+    public static function isSignedIn()
     {
         return isset($_SESSION["user"]);
     }
@@ -15,7 +15,7 @@ class Auth
     public static function user()
     {
         $user_id = intval($_SESSION["user"]);
-        return self::isLoggedIn() ? User::find([$user_id]) : null;
+        return self::isSignedIn() ? User::find([$user_id]) : null;
     }
 
     public static function checkPassword(User $user, string $password)
