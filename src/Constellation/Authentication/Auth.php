@@ -9,15 +9,13 @@ class Auth
 {
     public static function isLoggedIn()
     {
-        return isset($_SESSION['user']);
+        return isset($_SESSION["user"]);
     }
 
     public static function user()
     {
-        $user_id = intval($_SESSION['user']);
-        return self::isLoggedIn()
-        ? User::find([$user_id])
-        : null;
+        $user_id = intval($_SESSION["user"]);
+        return self::isLoggedIn() ? User::find([$user_id]) : null;
     }
 
     public static function checkPassword(User $user, string $password)
@@ -32,7 +30,7 @@ class Auth
 
     public static function signIn(User $user): void
     {
-        $_SESSION['user'] = $user->id;
+        $_SESSION["user"] = $user->id;
     }
 
     public static function signOut(): void
@@ -45,8 +43,8 @@ class Auth
 
     public static function register(array $attributes)
     {
-        $attributes['uuid'] = Uuid::uuid4()->toString();
-        $attributes['password'] = self::hashPassword($attributes['password']);
+        $attributes["uuid"] = Uuid::uuid4()->toString();
+        $attributes["password"] = self::hashPassword($attributes["password"]);
         return User::create($attributes);
     }
 }

@@ -12,8 +12,10 @@ use Constellation\Validation\Validate;
  */
 class Controller
 {
-    public function __construct(protected Environment $twig, protected Request $request)
-    {
+    public function __construct(
+        protected Environment $twig,
+        protected Request $request
+    ) {
     }
 
     /**
@@ -34,7 +36,7 @@ class Controller
         return $this->twig->render($template, $payload);
     }
 
-    public function validateRequest(array $data) 
+    public function validateRequest(array $data)
     {
         // IMPLEMENT ME!
         foreach ($data as $request_item => $ruleset) {

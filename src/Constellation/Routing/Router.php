@@ -71,7 +71,7 @@ class Router
                     $uri = $attribute[0] ?? "";
                     $name = $attribute[1] ?? null;
                     $middleware = $attribute[2] ?? [];
-                    $hash = md5($request_method.$uri);
+                    $hash = md5($request_method . $uri);
                     if (!key_exists($hash, $routes->getRoutes())) {
                         $routes->addRoute(
                             $hash,
@@ -148,7 +148,8 @@ class Router
                     $params = $matches;
                 }
 
-                return $result && $route->getMethod() === $this->request->getMethod();
+                return $result &&
+                    $route->getMethod() === $this->request->getMethod();
             }
         );
         // Set the route if we matched one successfully
