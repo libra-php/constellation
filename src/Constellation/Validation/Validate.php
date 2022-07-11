@@ -25,6 +25,7 @@ class Validate
         "reg_ex" => "%field is invalid",
     ];
     public static $errors = [];
+    public static $custom = [];
 
     public static function keys(array $config, array $keys)
     {
@@ -62,6 +63,7 @@ class Validate
                     "lowercase" => self::isLowercase($value, $extra),
                     "symbol" => self::isSymbol($value, $extra),
                     "reg_ex" => self::regEx($value, $extra),
+                    default => error_log("No default request validation rule [$rule] found")
                 };
                 if (!$result) {
                     self::addError($rule, [
@@ -70,6 +72,19 @@ class Validate
                         "%field" => $request_item,
                         "%value" => $value,
                     ]);
+                }
+                foreach (self::$custom as $custom_rule => $callback) {
+                    if ($custom_rule === $rule) {
+                        error_log("Custom request validation rule [$rule] found");
+                        if (!$callback($value)) {
+                            self::addError($rule, [
+                                "%rule" => $rule,
+                                "%rule_extra" => $extra,
+                                "%field" => $request_item,
+                                "%value" => $value,
+                            ]);
+                        }
+                    }
                 }
             }
         }
