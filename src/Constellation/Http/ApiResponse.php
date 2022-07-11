@@ -15,13 +15,14 @@ class ApiResponse implements IResponse
 
     public function prepare(): void
     {
-        // Do something with the data?
         $this->payload["success"] =
-            $data["success"] ?? http_response_code() === 200;
-        $this->payload["message"] = $data["message"] ?? "";
+            $this->data["success"] ?? http_response_code() === 200;
+        $this->payload["code"] =
+            $this->data["code"] ?? http_response_code();
+        $this->payload["message"] = $this->data["message"] ?? "";
         $this->payload["ts"] = time();
         $this->payload["date"] = date("Y-m-d H:i:s");
-        $this->payload["data"] = $this->data;
+        $this->payload["data"] = $this->data["payload"] ?? null;
     }
 
     public function execute(): never
