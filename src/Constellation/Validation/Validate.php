@@ -29,7 +29,7 @@ class Validate
 
     public static function addError($item, $replacements) 
     {
-        self::$errors[] = strtr(self::$messages[$item], $replacements);
+        self::$errors[$replacements["%field"]][] = strtr(self::$messages[$item], $replacements);
     }
 
     public static function request(array $data, array $request_rules): ?stdClass

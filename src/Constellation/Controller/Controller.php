@@ -25,11 +25,18 @@ class Controller
     {
         $payload = [
             ...$data,
+            "errors" => Validate::$errors,
             // Functions for twig templates
             "fn" => new class {
                 public function buildRoute($name, ...$vars)
                 {
                     return Router::buildRoute($name, ...$vars);
+                }
+
+                public function old($field)
+                {
+                    $request = Request::getInstance()->getData();
+                    return $request[$field] ?? '';
                 }
             },
         ];
