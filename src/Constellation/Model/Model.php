@@ -26,6 +26,16 @@ class Model
         return $model->isLoaded() ? $model : null;
     }
 
+    public static function findByAttribute(string $attribute, string $value)
+    {
+        $class = static::class;
+        $model = new $class();
+        $result = $model->db->selectRow("SELECT id 
+            FROM {$model->table} 
+            WHERE {$attribute} = %s", $value);
+        return $result ? new $class($result->{$model->key}) : null;
+    }
+
     public static function create(array $attributes)
     {
         $class = static::class;

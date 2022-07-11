@@ -36,12 +36,8 @@ class Controller
         return $this->twig->render($template, $payload);
     }
 
-    public function validateRequest(array $data)
+    public function validateRequest(array $request_rules)
     {
-        // IMPLEMENT ME!
-        foreach ($data as $request_item => $ruleset) {
-            Validate::request($request_item, $ruleset);
-        }
-        return $this->request->getData();
+        return Validate::request($this->request->getData(), $request_rules);
     }
 }
