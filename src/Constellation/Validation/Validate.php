@@ -11,8 +11,8 @@ use stdClass;
 class Validate
 {
     public static $messages = [
-        "string" => "%value: must be a string",
-        "email" => "%value: must be a valid email address",
+        "string" => "%value must be a string",
+        "email" => "%value must be a valid email address",
         "required" => "%field is a required field",
         "match" => "%field does not match",
     ];
@@ -67,7 +67,7 @@ class Validate
 
     public static function isRequired($value)
     {
-        return !is_null($value);
+        return !is_null($value) && $value != '';
     }
 
     public static function isMatch($request_data, $item, $value)
