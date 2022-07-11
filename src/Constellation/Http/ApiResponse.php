@@ -9,7 +9,7 @@ class ApiResponse implements IResponse
 {
     private array $payload = [];
 
-    public function __construct(private ?array $data)
+    public function __construct(private mixed $data)
     {
     }
 
@@ -22,7 +22,7 @@ class ApiResponse implements IResponse
         $this->payload["message"] = $this->data["message"] ?? "";
         $this->payload["ts"] = time();
         $this->payload["date"] = date("Y-m-d H:i:s");
-        $this->payload["data"] = $this->data["payload"] ?? null;
+        $this->payload["data"] = $this->data["payload"] ?? $this->data;
     }
 
     public function execute(): never
