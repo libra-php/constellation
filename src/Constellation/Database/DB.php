@@ -43,7 +43,9 @@ class DB
 
     private function establishConnection()
     {
-        if (!isset($this->config["type"]) || $this->config["type"] == "none") return null;
+        if (!isset($this->config["type"]) || $this->config["type"] == "none") {
+            return null;
+        }
         match ($this->config["type"]) {
             "mysql" => $this->mysql(),
             "pgsql" => $this->pgsql(),
@@ -101,7 +103,9 @@ class DB
 
     public function run(string $query, ...$args)
     {
-        if (!$this->pdo) throw new Error("No established database connection");
+        if (!$this->pdo) {
+            throw new Error("No established database connection");
+        }
         $this->time = microtime(true);
         $stmt = $this->pdo->prepare($query);
         $stmt->execute(...$args);

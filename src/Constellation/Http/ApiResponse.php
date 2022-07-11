@@ -17,8 +17,7 @@ class ApiResponse implements IResponse
     {
         $this->payload["success"] =
             $this->data["success"] ?? http_response_code() === 200;
-        $this->payload["code"] =
-            $this->data["code"] ?? http_response_code();
+        $this->payload["code"] = $this->data["code"] ?? http_response_code();
         $this->payload["message"] = $this->data["message"] ?? "";
         $this->payload["ts"] = time();
         $this->payload["date"] = date("Y-m-d H:i:s");

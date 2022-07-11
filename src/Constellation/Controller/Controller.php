@@ -36,7 +36,7 @@ class Controller
                 public function old($field)
                 {
                     $request = Request::getInstance()->getData();
-                    return $request[$field] ?? '';
+                    return $request[$field] ?? "";
                 }
             },
         ];

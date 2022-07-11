@@ -30,9 +30,12 @@ class Model
     {
         $class = static::class;
         $model = new $class();
-        $result = $model->db->selectRow("SELECT id 
+        $result = $model->db->selectRow(
+            "SELECT id 
             FROM {$model->table} 
-            WHERE {$attribute} = %s", $value);
+            WHERE {$attribute} = %s",
+            $value
+        );
         return $result ? new $class($result->{$model->key}) : null;
     }
 

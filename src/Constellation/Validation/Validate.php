@@ -17,8 +17,10 @@ class Validate
         "match" => "%field does not match",
         "min_length" => "%field is too short (min length: %rule_extra)",
         "max_length" => "%field is too long (max length: %rule_extra)",
-        "uppercase" => "%field requires at least %rule_extra uppercase character",
-        "lowercase" => "%field requires at least %rule_extra lowercase character",
+        "uppercase" =>
+            "%field requires at least %rule_extra uppercase character",
+        "lowercase" =>
+            "%field requires at least %rule_extra lowercase character",
         "symbol" => "%field requires at least %rule_extra symbol character",
         "reg_ex" => "%field is invalid",
     ];
@@ -33,9 +35,12 @@ class Validate
         }
     }
 
-    public static function addError($item, $replacements) 
+    public static function addError($item, $replacements)
     {
-        self::$errors[$replacements["%field"]][] = strtr(self::$messages[$item], $replacements);
+        self::$errors[$replacements["%field"]][] = strtr(
+            self::$messages[$item],
+            $replacements
+        );
     }
 
     public static function request(array $data, array $request_rules): ?stdClass
@@ -45,32 +50,30 @@ class Validate
             foreach ($ruleset as $rule_raw) {
                 $rule_split = explode("=", $rule_raw);
                 $rule = $rule_split[0];
-                $extra = count($rule_split) == 2
-                   ? $rule_split[1]
-                    : '';
-                $result = match($rule) {
-                    'string' => self::isString($value),
-                    'email' => self::isEmail($value),
-                    'required' => self::isRequired($value),
-                    'match' => self::isMatch($data, $request_item, $value),
-                    'min_length' => self::isMinLength($value, $extra),
-                    'max_length' => self::isMaxLength($value, $extra),
-                    'uppercase' => self::isUppercase($value, $extra),
-                    'lowercase' => self::isLowercase($value, $extra),
-                    'symbol' => self::isSymbol($value, $extra),
-                    'reg_ex' => self::regEx($value, $extra),
+                $extra = count($rule_split) == 2 ? $rule_split[1] : "";
+                $result = match ($rule) {
+                    "string" => self::isString($value),
+                    "email" => self::isEmail($value),
+                    "required" => self::isRequired($value),
+                    "match" => self::isMatch($data, $request_item, $value),
+                    "min_length" => self::isMinLength($value, $extra),
+                    "max_length" => self::isMaxLength($value, $extra),
+                    "uppercase" => self::isUppercase($value, $extra),
+                    "lowercase" => self::isLowercase($value, $extra),
+                    "symbol" => self::isSymbol($value, $extra),
+                    "reg_ex" => self::regEx($value, $extra),
                 };
                 if (!$result) {
                     self::addError($rule, [
                         "%rule" => $rule,
                         "%rule_extra" => $extra,
                         "%field" => $request_item,
-                        "%value" => $value
+                        "%value" => $value,
                     ]);
                 }
             }
         }
-        return count(self::$errors) == 0 ? (object)$data : null;
+        return count(self::$errors) == 0 ? (object) $data : null;
     }
 
     public static function isString($value)
@@ -85,14 +88,15 @@ class Validate
 
     public static function isRequired($value)
     {
-        return !is_null($value) && $value != '';
+        return !is_null($value) && $value != "";
     }
 
     public static function isMatch($request_data, $item, $value)
     {
-        if (!isset($request_data[$item.'_match'])) return false;
-        return $request_data[$item.'_match'] === $value;
-
+        if (!isset($request_data[$item . "_match"])) {
+            return false;
+        }
+        return $request_data[$item . "_match"] === $value;
     }
 
     public static function isMinLength($value, $min_length)
