@@ -63,7 +63,9 @@ class Validate
                     "lowercase" => self::isLowercase($value, $extra),
                     "symbol" => self::isSymbol($value, $extra),
                     "reg_ex" => self::regEx($value, $extra),
-                    default => error_log("No default request validation rule [$rule] found")
+                    default => error_log(
+                        "No default request validation rule [$rule] found"
+                    ),
                 };
                 if (!$result) {
                     self::addError($rule, [
@@ -75,7 +77,9 @@ class Validate
                 }
                 foreach (self::$custom as $custom_rule => $callback) {
                     if ($custom_rule === $rule) {
-                        error_log("Custom request validation rule [$rule] found");
+                        error_log(
+                            "Custom request validation rule [$rule] found"
+                        );
                         if (!$callback($value)) {
                             self::addError($rule, [
                                 "%rule" => $rule,

@@ -31,22 +31,26 @@ class Model
         $class = static::class;
         $model = new $class();
         $result = $model->db->selectRow(
-            "SELECT id 
-            FROM {$model->table} 
-            WHERE {$attribute} = %s",
+            "SELECT *
+            FROM $model->table 
+            WHERE $attribute = ?",
             $value
         );
-        return $result ? new $class($result->{$model->key}) : null;
+        if ($result) {
+            // Note: $key and $id args are array lists (model)
+            $id = [];
+            foreach ($model->key as $key) {
+                $id[] = $result->$key ?? null;
+            }
+        }
+        return $result ? new $class($id) : null;
     }
 
     public static function create(array $attributes)
     {
         $class = static::class;
         $model = new $class();
-        if ($model->insert($attributes)) {
-            return $model->isLoaded() ? $model : null;
-        }
-        return null;
+        return $model->insert($attributes);
     }
 
     public static function remove(?array $id)
