@@ -27,7 +27,7 @@ class SchemaTest extends TestCase
         });
         $this->assertSame(
             "CREATE TABLE IF NOT EXISTS users (" .
-                "id BIGINT UNSIGNED NOT NULL AUTO INCREMENT, " .
+                "id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, " .
                 "uuid BINARY(16) NOT NULL, " .
                 "name VARCHAR(255) NOT NULL, " .
                 "email VARCHAR(255) NOT NULL, " .
