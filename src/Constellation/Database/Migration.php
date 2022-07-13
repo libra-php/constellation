@@ -7,11 +7,11 @@ namespace Constellation\Database;
  */
 class Migration
 {
-    public function up(): void
+    public function up()
     {
     }
 
-    public function down(): void
+    public function down()
     {
     }
 }

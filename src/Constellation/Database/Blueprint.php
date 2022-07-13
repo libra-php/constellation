@@ -103,7 +103,7 @@ class Blueprint
 
     public function autoIncrement()
     {
-        $this->appendDefinition($this->last(), "AUTO INCREMENT");
+        $this->appendDefinition($this->last(), "AUTO_INCREMENT");
         return $this;
     }
 

@@ -45,6 +45,7 @@ class Auth
     {
         $attributes["uuid"] = Uuid::uuid4()->toString();
         $attributes["password"] = self::hashPassword($attributes["password"]);
+        $attributes["created_at"] = date("Y-m-d H:i:s");
         return User::create($attributes);
     }
 }
